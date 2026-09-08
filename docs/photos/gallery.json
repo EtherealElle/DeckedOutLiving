@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-08T19:43:46Z",
+  "generated": "2026-09-08T19:46:49Z",
   "categories": [
     {
       "id": "deck-repair",
@@ -9,28 +9,30 @@
   ],
   "photos": [
     {
-      "id": "deck-repair/after",
+      "id": "deck-repair/deck-after",
       "category": "deck-repair",
       "categoryLabel": "Deck Repair",
-      "web": "photos/deck-repair/after.jpg",
-      "thumb": "photos/deck-repair/after-thumb.jpg",
+      "web": "photos/deck-repair/deck-after.jpg",
+      "thumb": "photos/deck-repair/deck-after-thumb.jpg",
       "w": 1600,
       "h": 1200,
       "tw": 800,
       "th": 600,
-      "caption": "After"
+      "caption": "Deck",
+      "badge": "After"
     },
     {
-      "id": "deck-repair/before",
+      "id": "deck-repair/deck-before",
       "category": "deck-repair",
       "categoryLabel": "Deck Repair",
-      "web": "photos/deck-repair/before.jpg",
-      "thumb": "photos/deck-repair/before-thumb.jpg",
+      "web": "photos/deck-repair/deck-before.jpg",
+      "thumb": "photos/deck-repair/deck-before-thumb.jpg",
       "w": 960,
       "h": 1280,
       "tw": 600,
       "th": 800,
-      "caption": "Before"
+      "caption": "Deck",
+      "badge": "Before"
     },
     {
       "id": "deck-repair/img-20260714-121904",
@@ -57,5 +59,37 @@
       "caption": "Img 20260714 121914"
     }
   ],
-  "pairs": []
+  "pairs": [
+    {
+      "id": "deck-repair/deck",
+      "label": "Deck",
+      "category": "deck-repair",
+      "before": {
+        "id": "deck-repair/deck-before",
+        "category": "deck-repair",
+        "categoryLabel": "Deck Repair",
+        "web": "photos/deck-repair/deck-before.jpg",
+        "thumb": "photos/deck-repair/deck-before-thumb.jpg",
+        "w": 960,
+        "h": 1280,
+        "tw": 600,
+        "th": 800,
+        "caption": "Deck",
+        "badge": "Before"
+      },
+      "after": {
+        "id": "deck-repair/deck-after",
+        "category": "deck-repair",
+        "categoryLabel": "Deck Repair",
+        "web": "photos/deck-repair/deck-after.jpg",
+        "thumb": "photos/deck-repair/deck-after-thumb.jpg",
+        "w": 1600,
+        "h": 1200,
+        "tw": 800,
+        "th": 600,
+        "caption": "Deck",
+        "badge": "After"
+      }
+    }
+  ]
 }
