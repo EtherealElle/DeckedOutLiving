@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Decked Out Living">
+  <rect width="64" height="64" rx="12" fill="#343434"/>
+  <circle cx="21" cy="19" r="10" fill="#7EDA53"/>
+  <circle cx="18" cy="22" r="7.5" fill="#8FD074"/>
+  <g stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M8 52h48"/>
+    <path d="M12 52V38h40v14"/>
+    <path d="M12 38h40"/>
+    <path d="M18 38 32 27l14 11"/>
+  </g>
+  <g stroke="#fff" stroke-width="2.2" stroke-linecap="round" opacity=".55">
+    <path d="M22 52V40M32 52V40M42 52V40"/>
+  </g>
+</svg>

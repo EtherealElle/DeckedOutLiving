@@ -1,0 +1,24 @@
+# ---------------------------------------------------------------
+# Your full-resolution originals.
+#
+# These are NOT uploaded to GitHub. They are large, and hundreds of
+# them would eventually make the repository slow and unwieldy.
+#
+# THIS MEANS GITHUB IS NOT BACKING UP YOUR ORIGINALS.
+# Keep your own copy somewhere else - an external drive, Google
+# Drive, iCloud, Dropbox, anything. If this computer dies, the
+# web-sized photos survive on GitHub but the originals do not.
+#
+# If you would rather have them backed up on GitHub anyway, delete
+# the single line below. Fine for a few hundred photos.
+# ---------------------------------------------------------------
+photo-originals/
+
+# Windows / macOS clutter
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc

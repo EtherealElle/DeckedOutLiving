@@ -1,0 +1,39 @@
+Drop photos for this category straight into this folder, then
+double-click publish-photos.cmd in the main project folder.
+
+NAMING
+------
+Whatever you name the file becomes the caption shown on the website,
+tidied up. So:
+
+    cedar deck with pergola.jpg   ->   "Cedar Deck With Pergola"
+
+Because the filename is published, DO NOT put a customer's name or
+street address in it.
+
+BEFORE / AFTER PAIRS
+--------------------
+End two files with -before and -after and they become a drag slider
+on the website automatically:
+
+    barrett-street-rebuild-before.jpg
+    barrett-street-rebuild-after.jpg
+
+Both halves must be present. A lone -before file is ignored and the
+tool will tell you it is waiting for its match.
+
+WHAT YOU CAN DROP IN
+--------------------
+.jpg  .jpeg  .png  .heic  .heif  .webp  .tif  .bmp
+
+iPhone .heic photos work. If they ever stop working the tool tells
+you exactly what to do.
+
+WHAT HAPPENS TO THEM
+--------------------
+- Your original is moved to photo-originals/ at full resolution.
+- A web copy and a thumbnail are made for the website.
+- Every scrap of metadata is stripped, INCLUDING THE GPS LOCATION
+  that phones record. That location is the customer's house, so it
+  must never reach the web. The tool checks each finished file and
+  refuses to continue if anything survives.
