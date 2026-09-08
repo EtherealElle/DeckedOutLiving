@@ -1,6 +1,61 @@
 {
-  "generated": "2026-09-08T16:39:34Z",
-  "categories": [],
-  "photos": [],
+  "generated": "2026-09-08T19:43:46Z",
+  "categories": [
+    {
+      "id": "deck-repair",
+      "label": "Deck Repair",
+      "count": 4
+    }
+  ],
+  "photos": [
+    {
+      "id": "deck-repair/after",
+      "category": "deck-repair",
+      "categoryLabel": "Deck Repair",
+      "web": "photos/deck-repair/after.jpg",
+      "thumb": "photos/deck-repair/after-thumb.jpg",
+      "w": 1600,
+      "h": 1200,
+      "tw": 800,
+      "th": 600,
+      "caption": "After"
+    },
+    {
+      "id": "deck-repair/before",
+      "category": "deck-repair",
+      "categoryLabel": "Deck Repair",
+      "web": "photos/deck-repair/before.jpg",
+      "thumb": "photos/deck-repair/before-thumb.jpg",
+      "w": 960,
+      "h": 1280,
+      "tw": 600,
+      "th": 800,
+      "caption": "Before"
+    },
+    {
+      "id": "deck-repair/img-20260714-121904",
+      "category": "deck-repair",
+      "categoryLabel": "Deck Repair",
+      "web": "photos/deck-repair/img-20260714-121904.jpg",
+      "thumb": "photos/deck-repair/img-20260714-121904-thumb.jpg",
+      "w": 1600,
+      "h": 1200,
+      "tw": 800,
+      "th": 600,
+      "caption": "Img 20260714 121904"
+    },
+    {
+      "id": "deck-repair/img-20260714-121914",
+      "category": "deck-repair",
+      "categoryLabel": "Deck Repair",
+      "web": "photos/deck-repair/img-20260714-121914.jpg",
+      "thumb": "photos/deck-repair/img-20260714-121914-thumb.jpg",
+      "w": 1600,
+      "h": 1200,
+      "tw": 800,
+      "th": 600,
+      "caption": "Img 20260714 121914"
+    }
+  ],
   "pairs": []
 }
