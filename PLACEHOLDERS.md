@@ -1,137 +1,153 @@
 # Things to confirm or delete before going live
 
-Nothing on this site claims anything about your business that has not been
-verified. Where a normal contractor site would make a claim, there is either
-nothing at all or a clearly marked yellow box.
-
-This is the full list. Work down it and the site is honest and finished.
+Nothing on this site claims anything about your business that you have not
+confirmed. This is the full list of what is claimed, what is deliberately
+absent, and the one thing that is now blocking.
 
 ---
 
-## 1. Claims that are deliberately absent
+## 1. BLOCKER — your Georgia licence number
 
-The site says **nothing** about any of the following. Not vaguely, not by
-implication — the words do not appear:
+**The site now says "Licensed and insured" because you confirmed it. Georgia
+requires the licence number to appear alongside that claim in advertising, and a
+website counts as advertising.**
 
-- Licensed, insured, or bonded
-- Years in business or years of experience
+Under the residential and general contractor rules (O.C.G.A. Ch. 43-41),
+contractors must display their licence number on contracts, proposals and
+advertising. Right now the site makes the claim without the number.
+
+**Send me the number and I will place it everywhere it needs to go.** It is a
+two-minute change.
+
+If you would rather do it yourself, there are two spots, each marked with an HTML
+comment saying `LICENCE NUMBER`:
+
+- `docs/index.html` — the "Licensed & insured" card
+- `docs/about.html` — the "Experience, and the paperwork behind it" section
+
+The wording to use is `licensed (GA #XXXXXXX) and insured`.
+
+**Also worth telling me:** which licence it is. A *Georgia State Licensing Board
+residential contractor* licence and a *county business licence* are different
+things, and only the first one means what a customer reads it to mean. If it is
+the county business licence, the honest wording is different and I will change it.
+
+---
+
+## 2. Claims now on the site — confirmed by you
+
+| Claim | Where it appears |
+|---|---|
+| Licensed | Home hero, home trust card, About, every sidebar, every footer |
+| Insured | Same |
+| Over 30 years of experience *(the owner's, not the company's age)* | Same |
+
+Note the wording on the About page is deliberate: **"The owner has been building
+outdoor structures for over 30 years."** That is what you told me. It does not
+say the company has traded for 30 years, because you did not say that. If the
+business itself is also that old, tell me and I will say so directly — it is a
+stronger claim.
+
+---
+
+## 3. Claims still deliberately absent
+
+The site says **nothing** about any of these. The words do not appear:
+
+- **Bonded** — you confirmed licensed and insured, but not bonded
 - Number of decks, projects or homes completed
-- Awards, certifications, accreditations, brand partnerships
-- Star ratings or review counts anywhere, including in the code Google reads
+- Awards, certifications, accreditations, manufacturer partnerships
+- Star ratings or review counts, including in the code Google reads
 - Warranties or guarantees
-- Family-run, locally-owned, or family-owned
+- **Family-run, locally-owned, family-owned** — your old site says this, you have not confirmed it
 
-Your existing site at deckedoutliving.net says **"Over 30 years of experience"**
-and describes the business as **locally-owned and family-run**. Those may well
-be true, but they were not written here because you have not confirmed them.
-
-**What to do:** tell me which are accurate and I will add them. Say nothing and
-they stay off — which is a perfectly reasonable choice.
-
-There are two yellow placeholder boxes on the live site saying this in plain
-language, so a visitor is not left wondering:
-
-- `docs/index.html` — in the "Why homeowners call us" section
-- `docs/about.html` — in the main text
-
-**Delete those two boxes before you go live**, whether or not you add the
-claims. Search each file for `class="placeholder"` and delete from `<div` to the
-matching `</div>`.
+Any of these can be added in minutes. Just confirm them.
 
 ---
 
-## 2. Details taken from your existing site — confirm these are current
+## 4. Details taken from your existing site — confirm these are current
 
 | Detail | Value used | Where it came from |
 |---|---|---|
 | Phone | (678) 308-9153 | deckedoutliving.net |
 | Email | bilesenterprise@gmail.com | your brief |
 | Facebook | facebook.com/profile.php?id=61562897721519 | deckedoutliving.net |
-| Owner name | Josh (appears only inside customer reviews) | deckedoutliving.net |
+| Owner name | Josh — appears only inside the customer reviews | deckedoutliving.net |
 
 ---
 
-## 3. Opening hours — I had to make one assumption
+## 5. Opening hours — one assumption I had to make
 
 You said **7:30am–5:30pm** but not which days. Your existing site says
 Monday–Friday, so the site uses **Monday–Friday, 7:30am–5:30pm**.
 
 Most deck builders take Saturday calls. If you do, it is worth adding — Google
-displays these hours directly in search results.
+shows these hours directly in search results.
 
-**To change:** search all files in `docs` for `7:30am` and for `07:30`.
-The `07:30` version is in the code Google reads, so change both.
+**To change:** search all files in `docs` for `7:30am` and for `07:30`. The
+`07:30` version is in the code Google reads, so change both.
 
 ---
 
-## 4. Your address — a decision to make
+## 6. Your address — a decision to make
 
-The site currently publishes **Griffin, GA** with no street address, and lists
-your full service area. That is the correct setup for a business that travels to
-customers rather than having a shop people visit.
+The site publishes **Griffin, GA** with no street address, and lists the full
+service area. That is the right setup for a business that travels to customers.
 
 The trade-off: Google Business Profile listings with a verified street address
 tend to rank better locally.
 
-**Options:**
-- **Leave it.** Fine. This is normal for contractors.
-- **Add your address.** Send it to me and I will add it properly to the code
-  Google reads.
-- Either way, **set up a free Google Business Profile** at
-  google.com/business. For a local trade this does more for you than anything
-  on the website itself.
+- **Leave it** — normal for contractors, perfectly fine.
+- **Add your address** — send it and I will put it in the code Google reads.
+- Either way, **set up a free Google Business Profile** at google.com/business.
+  For a local trade this does more than anything on the website itself.
 
-Also note the map coordinates in the code are Griffin town centre, not your
-actual location. Harmless, but that is what they are.
+The map coordinates in the code are Griffin town centre, not your actual
+location. Harmless, but that is what they are.
 
 ---
 
-## 5. Customer reviews — imported, please verify
+## 7. Customer reviews — imported, please verify
 
 Four reviews from your existing site are in `docs/reviews.json` and show on the
 home and about pages:
 
 Rylan Hall · Marie Rea Shaw Sims · Steven Fletcher · Keith Graham
 
-They are copied word for word — nothing was rewritten or invented.
+Copied word for word — nothing rewritten or invented.
 
-**Please confirm** these are genuine and that you are happy to keep publishing
-them. Delete any you are unsure about; the section shrinks to fit, and if you
-empty the file completely the whole section disappears with no gap.
+**Please confirm** they are genuine and that you are happy to keep publishing
+them. Delete any you are unsure about; the section shrinks to fit, and emptying
+the file removes the section entirely with no gap.
 
 **No star ratings are shown**, and no rating data is in the code Google reads.
-Star ratings need to come from a real review platform. Inventing them is
-against Google's rules and can get a site penalised.
+Star ratings must come from a real review platform. Inventing them breaks
+Google's rules and can get a site penalised.
 
 ---
 
-## 6. Permits and code compliance — your decision, noted
+## 8. Permits and code compliance — your decision, noted
 
-You chose to leave permits off the site entirely, and it is off. This is a note,
-not an argument.
+You chose to leave permits off the site, and it is off. This is a note, not an
+argument.
 
-Two facts for your own awareness:
-
-- Georgia requires a state licence from the State Licensing Board for
-  Residential and General Contractors for residential work over **$2,500** in
-  combined labour and materials.
+- Georgia requires a state licence for residential work over **$2,500** in
+  combined labour and materials — which you have confirmed you hold.
 - Spalding County requires permits for accessory structures over **120 sq ft**.
 
-Most decks cross both thresholds. Competitors who say "we handle the permits"
-are answering a question your customers are already asking.
-
-**If you change your mind**, tell me and I will add a short, accurate section to
-the new-deck page and the FAQ. It is a ten-minute change.
+Most decks cross both thresholds. Now that you are stating you are licensed,
+"we handle the permits" is a natural and strong thing to add beside it, because
+it answers the next question a customer asks. **Say the word and I will add it.**
 
 ---
 
-## 7. Before it can go live
+## 9. Before it can go live
 
 Ordered by what actually blocks you.
 
-- [ ] **Delete the two yellow placeholder boxes** (`index.html`, `about.html`)
-- [ ] **Confirm the phone number** is right — it is on every page and in the
-      sticky bar at the bottom of every phone screen
+- [ ] **Send me your Georgia licence number** — see section 1. This is the only
+      hard blocker, and it exists because the site now claims you are licensed
+- [ ] **Confirm the phone number** — it is on every page and in the sticky bar
 - [ ] **Connect Formspree** so the form emails you (GO-LIVE-GUIDE Step 6).
       Until then the form says so honestly and offers call/text instead
 - [ ] **Confirm the four reviews** are genuine, or delete them
@@ -139,15 +155,13 @@ Ordered by what actually blocks you.
 - [ ] **Add 6–10 job photos** — the empty states are designed and look
       deliberate, but photos are what actually sell deck work
 - [ ] **Add at least one before/after pair** — name them `something-before.jpg`
-      and `something-after.jpg`. This is the single most persuasive thing you
-      can put on a deck site
-- [ ] Decide on the experience/licensing claims in section 1
+      and `something-after.jpg`. The single most persuasive thing on a deck site
+- [ ] Decide on **bonded** and **family-run / locally-owned** (section 3)
 - [ ] Set up a **Google Business Profile** — biggest single win for local search
-- [ ] Once live, submit the site to **Google Search Console**
-      (search.google.com/search-console) so you get found faster
+- [ ] Once live, submit to **Google Search Console** so you get found faster
 
 **Nice to have, not blocking:**
 
-- [ ] A photo of you or the crew for the About page — trust beats polish
+- [ ] A photo of the owner or crew for the About page — trust beats polish
 - [ ] Move deckedoutliving.net across (GO-LIVE-GUIDE Step 7)
 - [ ] Back up `photo-originals/` somewhere — GitHub does **not** hold those
