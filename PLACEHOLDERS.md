@@ -168,10 +168,11 @@ Ordered by what actually blocks you.
 - [ ] **Set up the Discord bot** — GO-LIVE-GUIDE Step 8, about five minutes,
       once. Then `import-photos.cmd` brings back the four job photos those dead
       shortcuts were pointing at, along with everything else you have posted
-- [ ] **Make one Discord channel per kind of work**, if you have not already.
-      The channel a photo is posted in decides its category on the website. Add
-      a channel, run `import-photos.cmd --setup`, and it becomes a new gallery
-      category on its own — though a *service page* for it still needs writing
+- [ ] **Check what is in your `pics` group in Discord.** The channels inside it
+      become the folders in `photo-inbox` and the categories on the gallery,
+      one per channel. Anything outside `pics` is ignored. Add a channel, run
+      `import-photos.cmd --setup`, and it becomes a new gallery category on its
+      own — though a *service page* for it still needs writing
 - [ ] **Type a few words when you post to Discord.** Not required, but what you
       type becomes the caption on your website. Photos posted with no text land
       as `untitled-...` and caption as the bare category name until renamed —

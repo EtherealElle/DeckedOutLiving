@@ -40,10 +40,26 @@ your browser where you name each job once.
 3. Name each job on the page that opens, click **Save names**.
 4. Run `publish-photos.cmd`.
 
-**The channel decides the category.** One channel per kind of work. Make a new
-channel in Discord and run `import-photos.cmd --setup`, and it becomes a new
-category with its own filter button on the gallery — no HTML to edit. (It does
-*not* get a service page or a menu entry; that needs real writing.)
+**The channels inside your `pics` group decide the categories.** In Discord,
+`pics` is the collapsible heading with your photo channels under it. Whatever
+channels are in there become the folders in `photo-inbox`, one per channel:
+
+```
+Discord                     photo-inbox/
+  PICS                        new-decks/
+    #new-decks       ---->     deck-repair/
+    #deck-repair               screen-rooms/
+    #screen rooms
+  ADMIN
+    #general        (ignored - not in PICS)
+```
+
+Add a channel to `pics` and run `import-photos.cmd --setup`, and it becomes a
+new category with its own filter button on the gallery — no HTML to edit. (It
+does *not* get a service page or a menu entry; that needs real writing.)
+
+Move a channel **out** of `pics` and it simply stops importing. Its photos stay
+on the website — nothing is deleted.
 
 Setting it up the first time is Step 8 of [GO-LIVE-GUIDE.md](GO-LIVE-GUIDE.md).
 It needs no extra software. The import stops at `photo-inbox` on purpose —

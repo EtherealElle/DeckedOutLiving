@@ -142,16 +142,21 @@ def _scan_category_dirs(root):
 
 
 def read_category_config(root):
-    """Full category records, plus any notes worth showing the user.
+    """Full category records, the notes worth showing, and the Discord source.
 
-    Returns (records, notes). A record is a dict with at least id and label,
-    and usually discordChannelId / discordChannelName.
+    Returns (records, notes, meta). A record is a dict with at least id and
+    label, and usually discordChannelId / discordChannelName. `meta` carries
+    discordCategoryId / discordCategoryName - the Discord channel category
+    (the collapsible group in the sidebar) whose channels define the category
+    list. Empty when no category has been chosen and every channel is fair
+    game.
 
     This never raises and never returns an empty list. A config that is
     missing, malformed, or has had a category deleted out of it must not be
     able to make already-published photos disappear.
     """
     notes = []
+    meta = {}
     path = config_path(root)
     raw = None
 
@@ -170,6 +175,11 @@ def read_category_config(root):
             "%s does not exist yet, so the original eight categories are being "
             "used. Run import-photos.cmd --setup to create it." % CONFIG_NAME
         )
+
+    src = (raw or {}).get("discordCategory")
+    if isinstance(src, dict) and src.get("id"):
+        meta = {"discordCategoryId": str(src["id"]),
+                "discordCategoryName": src.get("name") or ""}
 
     records, seen = [], set()
     entries = (raw or {}).get("categories")
@@ -221,16 +231,16 @@ def read_category_config(root):
             % (entry, CONFIG_NAME, humanise(entry), entry, entry)
         )
 
-    return records, notes
+    return records, notes, meta
 
 
 def load_categories(root):
     """The [(id, label), ...] shape publish_photos.py has always used."""
-    records, notes = read_category_config(root)
+    records, notes, _meta = read_category_config(root)
     return [(r["id"], r["label"]) for r in records], notes
 
 
-def write_category_config(root, records):
+def write_category_config(root, records, meta=None):
     """Write the config back, dropping the bookkeeping keys we added in memory."""
     clean = []
     for r in records:
@@ -240,16 +250,25 @@ def write_category_config(root, records):
             "discordChannelId": r.get("discordChannelId"),
             "discordChannelName": r.get("discordChannelName"),
         })
+    where = ""
+    if meta and meta.get("discordCategoryName"):
+        where = (" They come from the channels inside the \"%s\" category in "
+                 "Discord." % meta["discordCategoryName"])
     payload = {
         "_readme": (
             "The categories your photos are filed under. The order here is the "
-            "order of the filter buttons on the gallery page. Adding a channel "
-            "in Discord adds a category - run import-photos.cmd --setup. "
-            "Deleting a line here does NOT delete photos."
+            "order of the filter buttons on the gallery page." + where +
+            " Add or remove a channel there and run import-photos.cmd --setup "
+            "to match. Deleting a line here does NOT delete photos."
         ),
         "version": 1,
-        "categories": clean,
     }
+    if meta and meta.get("discordCategoryId"):
+        payload["discordCategory"] = {
+            "id": meta["discordCategoryId"],
+            "name": meta.get("discordCategoryName") or "",
+        }
+    payload["categories"] = clean
     path = config_path(root)
     tmp = path + ".tmp"
     with open(tmp, "w", encoding="utf-8") as fh:

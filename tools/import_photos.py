@@ -69,6 +69,7 @@ INVITE_PERMISSIONS = 66560
 
 TEXT_CHANNEL_TYPES = {0, 5}      # 0 text, 5 announcement
 FORUM_CHANNEL_TYPES = {15, 16}
+CATEGORY_CHANNEL_TYPE = 4        # the collapsible heading in the channel list
 
 GREEN, YELLOW, RED, DIM, OFF = "\033[92m", "\033[93m", "\033[91m", "\033[2m", "\033[0m"
 if os.name == "nt" and not os.environ.get("WT_SESSION"):
@@ -653,27 +654,87 @@ def cmd_setup():
                    % (guild["name"], invite_url(me["id"])))
 
     by_id = {c["id"]: c for c in channels}
-    forums = [c for c in channels if c.get("type") in FORUM_CHANNEL_TYPES]
-    text = sorted([c for c in channels if c.get("type") in TEXT_CHANNEL_TYPES],
-                  key=lambda c: (c.get("position", 0), c.get("name", "")))
+    all_text = sorted([c for c in channels if c.get("type") in TEXT_CHANNEL_TYPES],
+                      key=lambda c: (c.get("position", 0), c.get("name", "")))
 
-    if not text:
+    if not all_text:
         raise Stop("The bot cannot see any text channels in %s.\n\n"
                    "  If your channels are private, it needs to be added to\n"
                    "  them - see step 6 above." % guild["name"])
 
-    records, _ = read_category_config(ROOT)
+    records, _notes, meta = read_category_config(ROOT)
     state = load_state()
     mapped = {r.get("discordChannelId"): r for r in records
               if r.get("discordChannelId")}
+
+    # --- which Discord category holds the job photos? --------------------
+    # A Discord "category" is the collapsible group in the channel sidebar.
+    # Using one keeps #general and friends out of this entirely, and makes the
+    # rule simple: the channels inside it ARE the photo-inbox folders.
+    groups = sorted([c for c in channels if c.get("type") == CATEGORY_CHANNEL_TYPE],
+                    key=lambda c: (c.get("position", 0), c.get("name", "")))
+    chosen = None
+    if meta.get("discordCategoryId"):
+        chosen = by_id.get(meta["discordCategoryId"])
+    if chosen is None:
+        for g in groups:
+            if slugify(g.get("name", "")) in ("pics", "photos", "job-photos"):
+                chosen = g
+                break
+    if chosen is None and groups:
+        say()
+        say("  Which group of channels holds your job photos?")
+        say("  (These are the headings in your Discord channel list.)", DIM)
+        say()
+        for i, g in enumerate(groups, 1):
+            kids = [c["name"] for c in all_text if c.get("parent_id") == g["id"]]
+            say("    %2d  %-20s %s" % (i, g["name"],
+                                       ", ".join("#" + k for k in kids[:4]) +
+                                       (" ..." if len(kids) > 4 else "")))
+        say("     0  none - let me pick channels one at a time")
+        say()
+        while True:
+            pick = ask("  Number: ")
+            if pick == "0":
+                break
+            if pick.isdigit() and 1 <= int(pick) <= len(groups):
+                chosen = groups[int(pick) - 1]
+                break
+            say("  Type one of the numbers above.", YELLOW)
+
+    if chosen is not None:
+        meta = {"discordCategoryId": chosen["id"],
+                "discordCategoryName": chosen.get("name", "")}
+        text = [c for c in all_text if c.get("parent_id") == chosen["id"]]
+        if not text:
+            raise Stop(
+                "The \"%s\" group has no channels the bot can see.\n\n"
+                "  If the channels inside it are private, the bot has to be let\n"
+                "  in. In Discord, right-click \"%s\":\n"
+                "      Edit Category  ->  Permissions  ->  Add members or roles\n"
+                "      add \"%s\", allow View Channel and Read Message History.\n"
+                % (chosen.get("name"), chosen.get("name"), bot_name))
+    else:
+        meta = {}
+        text = all_text
+
+    forums = [c for c in channels if c.get("type") in FORUM_CHANNEL_TYPES
+              and (chosen is None or c.get("parent_id") == chosen["id"])]
+
     skipped = set(state.get("skippedChannels", []))
+    if chosen is not None:
+        # The group defines the list, so an old skip must not silently hide a
+        # channel the owner has since put in it.
+        skipped -= {c["id"] for c in text}
 
     say()
-    say("  Channels the bot can see in %s:" % guild["name"])
+    if chosen is not None:
+        say("  Channels in \"%s\" - these become your categories:"
+            % chosen.get("name"), GREEN)
+    else:
+        say("  Channels the bot can see in %s:" % guild["name"])
     say()
     for c in text:
-        parent = by_id.get(c.get("parent_id") or "", {}).get("name", "")
-        where = ("  (%s)" % parent) if parent else ""
         if c["id"] in mapped:
             note = "-> %s" % mapped[c["id"]]["label"]
             colour = GREEN
@@ -683,7 +744,7 @@ def cmd_setup():
         else:
             note = "NEW"
             colour = YELLOW
-        say("    #%-22s%-14s %s" % (c["name"], where, note), colour)
+        say("    #%-24s %s" % (c["name"], note), colour)
 
     if forums:
         say()
@@ -693,10 +754,27 @@ def cmd_setup():
         say("  If your photos live in one of those, say so and it can be added.",
             YELLOW)
 
-    # Map the unmapped ones.
+    # --- channels no longer in the group stop feeding their category ------
+    if chosen is not None:
+        live = {c["id"] for c in text}
+        for r in records:
+            cid = r.get("discordChannelId")
+            if cid and cid not in live:
+                say()
+                say("  #%s is no longer in \"%s\", so it will stop importing."
+                    % (r.get("discordChannelName") or cid, chosen.get("name")),
+                    YELLOW)
+                say("    Your published %s photos are untouched and stay on the "
+                    "website." % r["label"], DIM)
+                r["discordChannelId"] = None
+                r["discordChannelName"] = None
+        mapped = {r.get("discordChannelId"): r for r in records
+                  if r.get("discordChannelId")}
+
+    # --- map whatever is not mapped yet -----------------------------------
     unmapped = [c for c in text if c["id"] not in mapped and c["id"] not in skipped]
-    accept_all = False
-    if unmapped:
+    accept_all = chosen is not None   # the group already answered "which ones"
+    if unmapped and not accept_all:
         say()
         say("  Now, which of these hold job photos?")
         say("  For each one:  Enter = make it a category,  s = skip it,", DIM)
@@ -772,13 +850,26 @@ def cmd_setup():
     if not linked:
         say()
         say("  Nothing is linked to Discord, so there is nothing to import.", YELLOW)
+    if meta.get("discordCategoryName"):
+        say()
+        say("  From now on the channels inside \"%s\" decide your categories."
+            % meta["discordCategoryName"], DIM)
+        say("  Add or remove a channel there, run this again, and it follows.", DIM)
 
     say()
     if not ask("  Save this? [y/N] ", "n").lower().startswith("y"):
         raise Stop("Nothing was saved.")
 
     new_cats = [r for r in records if r.pop("isNew", False)]
-    write_category_config(ROOT, records)
+    write_category_config(ROOT, records, meta)
+
+    # Make the folders now rather than at the first download, so the promise
+    # that these channels are the photo-inbox folders is visible immediately.
+    for r in records:
+        try:
+            os.makedirs(os.path.join(INBOX, r["id"]), exist_ok=True)
+        except OSError:
+            pass
 
     state["skippedChannels"] = sorted(skipped)
     for r in linked:
@@ -814,10 +905,14 @@ def cmd_channels():
     api = Api(secret["token"])
     me = api.get("/users/@me")
     guilds = api.get("/users/@me/guilds")
-    records, _ = read_category_config(ROOT)
+    records, _notes, meta = read_category_config(ROOT)
     mapped = {r.get("discordChannelId"): r for r in records if r.get("discordChannelId")}
+    source = meta.get("discordCategoryId")
     say()
     say("  Signed in as %s." % me.get("username"), GREEN)
+    if meta.get("discordCategoryName"):
+        say("  Your categories come from the \"%s\" group."
+            % meta["discordCategoryName"], DIM)
     for g in guilds:
         say()
         say("  %s" % g["name"], GREEN)
@@ -826,14 +921,30 @@ def cmd_channels():
         except (Forbidden, NotFound):
             say("    (cannot list channels here)", YELLOW)
             continue
+        by_id = {c["id"]: c for c in channels}
+        # group the listing the way Discord shows it, so "which group is it in"
+        # is answerable at a glance
         for c in sorted(channels, key=lambda c: (c.get("position", 0),)):
+            if c.get("type") == CATEGORY_CHANNEL_TYPE:
+                tag = "   <- your photo categories" if c["id"] == source else ""
+                say("    %s%s" % (c.get("name", "").upper(), tag),
+                    GREEN if c["id"] == source else DIM)
+                continue
+            parent = by_id.get(c.get("parent_id") or "", {})
+            inside = (source is None) or (c.get("parent_id") == source)
+            where = "      " if parent else "    "
             if c.get("type") in FORUM_CHANNEL_TYPES:
-                say("    #%-24s forum channel, not supported" % c["name"], YELLOW)
+                say("%s#%-22s forum channel, not supported" % (where, c["name"]),
+                    YELLOW)
             elif c.get("type") in TEXT_CHANNEL_TYPES:
                 r = mapped.get(c["id"])
-                say("    #%-24s %s" % (c["name"],
-                                       ("-> " + r["label"]) if r else "not linked"),
-                    GREEN if r else DIM)
+                if r:
+                    note, colour = "-> " + r["label"], GREEN
+                elif not inside:
+                    note, colour = "(not in your photo group)", DIM
+                else:
+                    note, colour = "not linked - run --setup", YELLOW
+                say("%s#%-22s %s" % (where, c["name"], note), colour)
     say()
     return 0
 
@@ -1194,7 +1305,7 @@ def main():
     secret = load_secret()
     api = Api(secret["token"])
     state = load_state()
-    records, notes = read_category_config(ROOT)
+    records, notes, meta = read_category_config(ROOT)
     for n in notes:
         say("  " + n, YELLOW)
 
@@ -1202,6 +1313,21 @@ def main():
     if not linked:
         raise Stop("No Discord channels are linked to a category yet.\n\n"
                    "  Run:  import-photos.cmd --setup")
+
+    # A channel added to the photo group since last time should not go
+    # unnoticed, but creating a category is a decision, so ask rather than act.
+    new_channels = []
+    if meta.get("discordCategoryId") and secret.get("guildId"):
+        try:
+            known = {r.get("discordChannelId") for r in records}
+            known |= set(state.get("skippedChannels", []))
+            for c in api.get("/guilds/%s/channels" % secret["guildId"]):
+                if (c.get("type") in TEXT_CHANNEL_TYPES
+                        and c.get("parent_id") == meta["discordCategoryId"]
+                        and c["id"] not in known):
+                    new_channels.append(c["name"])
+        except (Forbidden, NotFound, Stop):
+            pass
 
     today = datetime.now(timezone.utc).strftime("%Y%m%d")
     jobs, dropped_total, config_changed = [], [], False
@@ -1267,7 +1393,7 @@ def main():
             chan_state["pendingCursor"] = messages[-1]["id"]
 
     if config_changed:
-        write_category_config(ROOT, records)
+        write_category_config(ROOT, records, meta)
 
     if intent_suspect and not jobs:
         raise Stop(
@@ -1286,6 +1412,7 @@ def main():
                 cs["lastMessageId"] = cs.pop("pendingCursor")
         if not dry:
             save_state(state)
+        report_new_channels(new_channels, meta)
         say()
         return 0
 
@@ -1379,8 +1506,23 @@ def main():
     say("  " + "-" * 50, DIM)
     say("  Have a look at the names in photo-inbox, then run:", GREEN)
     say("      publish-photos.cmd", GREEN)
+    report_new_channels(new_channels, meta)
     say()
     return 0
+
+
+def report_new_channels(names, meta):
+    """A channel added to the photo group is a new category waiting to happen."""
+    if not names:
+        return
+    say()
+    say("  New channel%s in \"%s\": %s"
+        % ("" if len(names) == 1 else "s",
+           meta.get("discordCategoryName", "your photo group"),
+           ", ".join("#" + n for n in names)), YELLOW)
+    say("  Run  import-photos.cmd --setup  to turn %s into %s."
+        % ("it" if len(names) == 1 else "them",
+           "a category" if len(names) == 1 else "categories"), YELLOW)
 
 
 if __name__ == "__main__":

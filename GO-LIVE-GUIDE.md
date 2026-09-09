@@ -200,19 +200,27 @@ nothing else. It cannot post, delete, or change anything.
 
 5. Double-click **`import-photos.cmd`**. The first time, it walks you through
    the rest: it asks for the token (typing is hidden), gives you a link to add
-   the bot to your server, then lists your channels and asks which ones hold
-   job photos.
+   the bot to your server, then finds your **`pics`** group and lists the
+   channels inside it.
 
-   **One channel per kind of work.** The channel a photo is posted in decides
-   which category it lands in. If you make a new channel later, run
-   `import-photos.cmd --setup` again and it becomes a new category.
+   **The channels inside `pics` become your categories, one folder each.** A
+   channel called `#screen rooms` gives you `photo-inbox\screen-rooms\` and a
+   "Screen Rooms" button on the gallery. Channels outside `pics` — `#general`
+   and the like — are ignored completely.
+
+   Add a channel to `pics` and run `import-photos.cmd --setup` again to pick it
+   up. Drag one out of `pics` and it stops importing; its photos stay on the
+   website.
+
+   If you ever rename or replace the `pics` group, setup shows you a numbered
+   list of your groups and asks which one to use.
 
 6. **If your photo channels are private, the bot still cannot see them.**
-   In Discord, right-click the channel *category* that holds them:
-   **Edit Channel → Permissions → Add members or roles**, add
+   In Discord, right-click the **`pics`** group itself:
+   **Edit Category → Permissions → Add members or roles**, add
    `Decked Out Living Photos`, and allow **View Channel** and
-   **Read Message History**. Doing that once on the category covers every
-   channel inside it.
+   **Read Message History**. Doing it once on the group covers every channel
+   inside it.
 
 Your token is saved in `discord-bot.secret.json`. That file is **never**
 uploaded to GitHub, and `publish-website.cmd` refuses to run if it ever ends up
