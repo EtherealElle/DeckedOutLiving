@@ -22,3 +22,25 @@ desktop.ini
 # Python
 __pycache__/
 *.pyc
+
+# ---------------------------------------------------------------
+# SECRETS. These never go to GitHub.
+#
+# discord-bot.secret.json holds the password for your Discord bot.
+# This repository is PUBLIC. Anyone who reads that token could read
+# every message in your Discord server.
+#
+# If it ever does get uploaded, or you paste it anywhere by mistake:
+# go to discord.com/developers, open your app, click Bot, click
+# Reset Token. The old one stops working immediately.
+#
+# The glob is deliberate - renaming the file must not un-hide it.
+# ---------------------------------------------------------------
+*.secret.json
+*.secret
+discord-bot.secret.json
+
+# Which Discord messages have already been imported. Local bookkeeping,
+# not worth uploading, and it names your channels.
+.import-state.json
+tools/.import-state.json

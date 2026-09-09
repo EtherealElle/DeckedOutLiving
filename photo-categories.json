@@ -1,0 +1,54 @@
+{
+  "_readme": "The categories your photos are filed under. The order here is the order of the filter buttons on the gallery page. Adding a channel in Discord adds a category - run import-photos.cmd --setup. Deleting a line here does NOT delete photos.",
+  "version": 1,
+  "categories": [
+    {
+      "id": "new-decks",
+      "label": "New Decks",
+      "discordChannelId": null,
+      "discordChannelName": null
+    },
+    {
+      "id": "deck-repair",
+      "label": "Deck Repair",
+      "discordChannelId": null,
+      "discordChannelName": null
+    },
+    {
+      "id": "staining-sealing",
+      "label": "Staining & Sealing",
+      "discordChannelId": null,
+      "discordChannelName": null
+    },
+    {
+      "id": "railings",
+      "label": "Railings",
+      "discordChannelId": null,
+      "discordChannelName": null
+    },
+    {
+      "id": "pergolas",
+      "label": "Pergolas & Covered Structures",
+      "discordChannelId": null,
+      "discordChannelName": null
+    },
+    {
+      "id": "screened-porches",
+      "label": "Screened Porches",
+      "discordChannelId": null,
+      "discordChannelName": null
+    },
+    {
+      "id": "custom-woodwork",
+      "label": "Custom Woodwork",
+      "discordChannelId": null,
+      "discordChannelName": null
+    },
+    {
+      "id": "car-ports",
+      "label": "Car Ports",
+      "discordChannelId": null,
+      "discordChannelName": null
+    }
+  ]
+}

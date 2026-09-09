@@ -12,22 +12,54 @@ nothing to compile.
 |---|---|
 | **Get the site online for the first time** | Read **[GO-LIVE-GUIDE.md](GO-LIVE-GUIDE.md)** |
 | **Know what still needs my input** | Read **[PLACEHOLDERS.md](PLACEHOLDERS.md)** |
-| **Add job photos** | Drop them in `photo-inbox/`, run `publish-photos.cmd` |
+| **Get job photos off Discord** | Run `import-photos.cmd` |
+| **Add job photos by hand** | Drop them in `photo-inbox/`, run `publish-photos.cmd` |
 | **Push changes live** | Run `publish-website.cmd` |
 
 ---
 
-## The three buttons
+## The four buttons
 
 | File | What it does | How often |
 |---|---|---|
 | `setup-github.cmd` | Connects this folder to GitHub | Once, ever |
-| `publish-photos.cmd` | Turns dropped photos into website photos | Whenever you have new job photos |
+| `import-photos.cmd` | Fetches job photos out of Discord | Whenever you have posted photos |
+| `publish-photos.cmd` | Turns dropped photos into website photos | After importing, or after dropping photos in by hand |
 | `publish-website.cmd` | Puts everything online | After any change |
 
 ---
 
-## Adding photos
+## Adding photos — from Discord
+
+You already post job photos to Discord from your phone, one job per message.
+`import-photos.cmd` fetches them, files them by category, and opens a page in
+your browser where you name each job once.
+
+1. Post to Discord as usual, in the channel for that kind of work.
+2. Run `import-photos.cmd`.
+3. Name each job on the page that opens, click **Save names**.
+4. Run `publish-photos.cmd`.
+
+**The channel decides the category.** One channel per kind of work. Make a new
+channel in Discord and run `import-photos.cmd --setup`, and it becomes a new
+category with its own filter button on the gallery — no HTML to edit. (It does
+*not* get a service page or a menu entry; that needs real writing.)
+
+Setting it up the first time is Step 8 of [GO-LIVE-GUIDE.md](GO-LIVE-GUIDE.md).
+It needs no extra software. The import stops at `photo-inbox` on purpose —
+nothing reaches the website without you looking at it.
+
+Two things worth knowing:
+
+- **Discord does not remove GPS from your photos.** It is a delivery van, not a
+  cleaner. That is why `publish-photos.cmd` still strips everything and checks
+  it three ways, exactly as it does for photos you copy across by hand.
+- **Your phone may shrink a photo when it uploads.** For a shot you really care
+  about, copy it off the phone straight into `photo-inbox` instead.
+
+---
+
+## Adding photos — by hand
 
 Drop files into the right folder and run one command. You never edit HTML.
 
@@ -43,9 +75,15 @@ photo-inbox/
 └─ car-ports/
 ```
 
-The folder names must match exactly. If you make a folder of your own, the tool
-will tell you it is being ignored and list the valid ones — it will not fail
-silently. Want a category that is not there? Ask and it can be added.
+That list lives in `photo-categories.json`, which is also where each category is
+matched to its Discord channel. The folder names must match it exactly. If you
+make a folder of your own, the tool tells you it is being ignored and lists the
+valid ones — it will not fail silently.
+
+Deleting a category from `photo-categories.json` does **not** delete its photos.
+If the folder still holds any, the tool keeps the category and says so. To
+retire one for real, delete its folders under `photo-originals/` and
+`docs/photos/`.
 
 **Photos have to be real image files.** Dragging a picture out of a browser,
 Discord, Google Photos or OneDrive gives you a `.url` shortcut, not the picture.
@@ -68,8 +106,16 @@ Then double-click `publish-photos.cmd`. It will:
 
 `cedar deck with pergola.jpg` publishes as *"Cedar Deck With Pergola"*.
 
-**So never put a customer's name or street address in a filename.** The tool
-warns you if a filename looks like an address, but it cannot catch everything.
+Importing from Discord, the chain runs one step further: **what you type in
+Discord, or on the naming page, becomes the filename, which becomes the words
+on your website.**
+
+**So never put a customer's name or street address in a filename or a Discord
+message.** Both tools warn you if something looks like an address, and phone
+numbers and dollar amounts are stripped out automatically — but nothing can
+recognise a bare surname. Post photos with no text at all and they arrive named
+`untitled-...`, which is safe: the caption falls back to the category name and
+the tool tells you which ones to rename.
 
 ### Before/after pairs
 
@@ -169,7 +215,29 @@ site is relative, so nothing else changes.
   `publish-photos.cmd` installs them the first time it runs.
 - **Git** — only for publishing. See GO-LIVE-GUIDE.md.
 
-The website itself needs neither. It is plain files.
+`import-photos.cmd` needs Python but nothing else — no extra packages, nothing
+to install. It uses only what Python already ships with.
+
+The website itself needs none of it. It is plain files.
+
+---
+
+## The Discord bot token
+
+Connecting Discord creates `discord-bot.secret.json` in this folder. It is a
+password for reading your Discord server, and **this repository is public**, so
+it must never be uploaded.
+
+Three things stop that happening, independently of each other:
+
+- `.gitignore` hides it, by pattern, so renaming it does not un-hide it.
+- `import-photos.cmd` refuses to save a token unless it can prove git is
+  ignoring it.
+- `publish-website.cmd` checks every upload and stops dead if a file with
+  `secret` or `token` in its name is about to go out.
+
+If you ever think it has leaked: discord.com/developers → your app → **Bot** →
+**Reset Token**. The old one stops working the moment you do.
 
 ---
 

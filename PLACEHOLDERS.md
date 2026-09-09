@@ -162,11 +162,20 @@ Ordered by what actually blocks you.
       (`pergola-over-new-deck.jpg`), then run `publish-photos.cmd` again. The
       same applies to `deck-before.jpg` / `deck-after.jpg`, which caption as
       just "Deck"
-- [ ] **Re-save the five Discord photos properly.** `photo-inbox/car-ports/`,
-      `custom-woodwork/` and `new-decks/` contain `.url` shortcut files, not
-      images — dragging a picture out of Discord makes a link, not a copy. Open
-      each image, right-click, *Save image as...* into the folder, delete the
-      `.url` file, then run `publish-photos.cmd`
+- [x] ~~Re-save the five Discord photos properly~~ — the `.url` shortcut files
+      have been deleted. Dragging a picture out of Discord makes a link, not a
+      copy, and those particular links had already expired
+- [ ] **Set up the Discord bot** — GO-LIVE-GUIDE Step 8, about five minutes,
+      once. Then `import-photos.cmd` brings back the four job photos those dead
+      shortcuts were pointing at, along with everything else you have posted
+- [ ] **Make one Discord channel per kind of work**, if you have not already.
+      The channel a photo is posted in decides its category on the website. Add
+      a channel, run `import-photos.cmd --setup`, and it becomes a new gallery
+      category on its own — though a *service page* for it still needs writing
+- [ ] **Type a few words when you post to Discord.** Not required, but what you
+      type becomes the caption on your website. Photos posted with no text land
+      as `untitled-...` and caption as the bare category name until renamed —
+      the naming page that opens after each import is the easy place to fix that
 - [ ] **Spread photos across the other seven services** — all four published
       photos are in Deck Repair, so only that service card shows a photo. The
       other seven show a branded tile until you add one for them

@@ -33,6 +33,14 @@ if errorlevel 1 goto noremote
 REM --- what changed? -------------------------------------------
 git add -A
 
+REM --- last check before anything leaves this computer ----------
+REM  This repository is PUBLIC. If a password file has crept into
+REM  the upload, stop dead rather than publish it.
+git diff --cached --name-only > "%TEMP%\dol-staged.txt"
+findstr /I /C:"secret" /C:"token" "%TEMP%\dol-staged.txt" >nul
+if not errorlevel 1 goto secretfound
+del "%TEMP%\dol-staged.txt" >nul 2>nul
+
 git diff --cached --quiet
 if not errorlevel 1 (
     echo   Nothing has changed since the last time you published.
@@ -65,6 +73,34 @@ echo   ===========================================================
 echo.
 pause
 exit /b 0
+
+:secretfound
+echo.
+echo   ===========================================================
+echo    STOPPED - a password file was about to be uploaded.
+echo   ===========================================================
+echo.
+echo   These files are staged and their names look like secrets:
+echo.
+findstr /I /C:"secret" /C:"token" "%TEMP%\dol-staged.txt"
+echo.
+echo   This website's repository is PUBLIC, so uploading that file
+echo   would let anyone read your Discord server.
+echo.
+echo   NOTHING HAS BEEN PUBLISHED. The upload has been cancelled
+echo   and the files unstaged.
+echo.
+echo   What to do:
+echo     1. Make sure .gitignore contains this line:   *.secret.json
+echo     2. If the file was ever uploaded before, go to
+echo        discord.com/developers, open your app, click Bot,
+echo        and click Reset Token.
+echo     3. Run this file again.
+echo.
+git reset >nul 2>nul
+del "%TEMP%\dol-staged.txt" >nul 2>nul
+pause
+exit /b 1
 
 :nogit
 echo   Git is not installed on this computer.

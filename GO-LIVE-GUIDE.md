@@ -168,9 +168,74 @@ The site works identically at both addresses.
 
 ---
 
+## Step 8 — Connect Discord (optional)
+
+You already send job photos to Discord from your phone. This lets the computer
+fetch them for you instead of downloading each one by hand. Skip this step if
+you would rather keep copying photos across yourself — everything else works
+the same either way.
+
+You are creating a **bot**: a second account that can read your server and
+nothing else. It cannot post, delete, or change anything.
+
+### In your web browser
+
+1. Go to **discord.com/developers/applications**
+   Click **New Application**, name it `Decked Out Living Photos`, click
+   **Create**.
+
+2. On the left, click **Bot**.
+
+3. Scroll down to **Privileged Gateway Intents** and turn on
+   **MESSAGE CONTENT INTENT**. Click **Save Changes**.
+
+   > This one is not optional. Without it Discord hides your photos from the
+   > bot completely and the tool will report that it found nothing.
+
+4. Click **Reset Token**, confirm, then **Copy**.
+   Discord shows this once and never again. It is a password — do not put it
+   in an email or a chat window.
+
+### On this computer
+
+5. Double-click **`import-photos.cmd`**. The first time, it walks you through
+   the rest: it asks for the token (typing is hidden), gives you a link to add
+   the bot to your server, then lists your channels and asks which ones hold
+   job photos.
+
+   **One channel per kind of work.** The channel a photo is posted in decides
+   which category it lands in. If you make a new channel later, run
+   `import-photos.cmd --setup` again and it becomes a new category.
+
+6. **If your photo channels are private, the bot still cannot see them.**
+   In Discord, right-click the channel *category* that holds them:
+   **Edit Channel → Permissions → Add members or roles**, add
+   `Decked Out Living Photos`, and allow **View Channel** and
+   **Read Message History**. Doing that once on the category covers every
+   channel inside it.
+
+Your token is saved in `discord-bot.secret.json`. That file is **never**
+uploaded to GitHub, and `publish-website.cmd` refuses to run if it ever ends up
+in an upload. If you think it has leaked, go back to
+discord.com/developers → your app → **Bot** → **Reset Token**; the old one
+stops working immediately.
+
+---
+
 ## Day-to-day: publishing changes
 
-**Adding job photos**
+**Adding job photos — from Discord**
+
+1. Post the photos to Discord as you already do, one job per message, in the
+   channel for that kind of work.
+2. Double-click **`import-photos.cmd`**. It downloads them into `photo-inbox`
+   and opens a page in your browser.
+3. On that page, type a name for each job and click **Save names**. What you
+   type becomes the caption on your website, so no customer names or addresses.
+4. Double-click **`publish-photos.cmd`**.
+5. Double-click **`publish-website.cmd`**.
+
+**Adding job photos — by hand**
 
 1. Drop photos into the matching folder inside `photo-inbox`.
 2. Double-click **`publish-photos.cmd`**.
@@ -217,6 +282,32 @@ repository, click the file, and click **History** to see the earlier version.
 Open PowerShell in this folder and run `git restore .` — that throws away
 unpublished edits and returns the files to the last published state.
 
+**"Discord says the token is wrong"**
+Tokens get reset, and sometimes only half of one gets pasted. Go to
+discord.com/developers → your app → **Bot** → **Reset Token** → **Copy**, then
+run `import-photos.cmd --setup` and paste the new one.
+
+**"The bot cannot see one of my channels"**
+Private channels have to let it in. Right-click the channel in Discord:
+**Edit Channel → Permissions → Add members or roles**, add the bot, allow
+**View Channel** and **Read Message History**. The other channels still import
+normally in the meantime.
+
+**"It says it found nothing, but I just posted photos"**
+Almost always the message content setting. Go to discord.com/developers → your
+app → **Bot** → **Privileged Gateway Intents** → turn on **MESSAGE CONTENT
+INTENT** → **Save Changes**, then run it again.
+
+**"It downloaded the same photos twice"**
+The tool keeps a list of what it has already fetched in
+`tools\.import-state.json`. If that file is deleted, it starts over. Delete the
+duplicates out of `photo-inbox` before running `publish-photos.cmd`.
+
+**"A photo published with the caption 'Car Ports' instead of a real name"**
+That photo still had its camera filename. Post-and-forget photos come in named
+`untitled-...`, and the tool tells you which ones. Rename them in `photo-inbox`
+before publishing, or use the naming page that opens after an import.
+
 **Something else**
 Your files are safe. Every published version is kept on GitHub forever, and you
 can always go back to an earlier one. Nothing you do by editing a page can
@@ -230,8 +321,12 @@ permanently break anything.
 deckedoutliving-website/
 │
 ├─ setup-github.cmd       run once, connects to GitHub
+├─ import-photos.cmd      Discord ->  photo-inbox
 ├─ publish-photos.cmd     photos  ->  website
 ├─ publish-website.cmd    website ->  online
+│
+├─ photo-categories.json  your categories, and which channel feeds each one
+├─ discord-bot.secret.json  your bot password - NEVER UPLOADED
 │
 ├─ photo-inbox/           DROP JOB PHOTOS HERE, by category
 ├─ photo-originals/       your full-size originals (kept, not uploaded)

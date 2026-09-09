@@ -32,10 +32,17 @@ Usage:
 import io
 import json
 import os
-import re
 import shutil
 import sys
 from datetime import datetime, timezone
+
+# Shared with import_photos.py. Standard library only, so this import is safe
+# to do before the Pillow check below.
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from photo_common import (  # noqa: E402
+    ADDRESS_RE, CAMERA_RE, PAIR_RE, READABLE,
+    humanise, load_categories, slugify, strip_index,
+)
 
 # --------------------------------------------------------------------------
 # Dependencies
@@ -75,39 +82,12 @@ THUMB_EDGE = 800
 WEB_QUALITY = 82
 THUMB_QUALITY = 78
 
-CATEGORIES = [
-    ("new-decks",        "New Decks"),
-    ("deck-repair",      "Deck Repair"),
-    ("staining-sealing", "Staining & Sealing"),
-    ("railings",         "Railings"),
-    ("pergolas",         "Pergolas & Covered Structures"),
-    ("screened-porches", "Screened Porches"),
-    ("custom-woodwork",  "Custom Woodwork"),
-    ("car-ports",        "Car Ports"),
-]
+# The category list, the slug rules and the before/after convention are shared
+# with import_photos.py. They live in tools/photo_common.py because if the two
+# tools ever disagree about them, before/after pairs stop matching and there is
+# nothing on screen to say why.
+CATEGORIES, CATEGORY_NOTES = load_categories(ROOT)
 CATEGORY_LABEL = dict(CATEGORIES)
-
-READABLE = {".jpg", ".jpeg", ".png", ".heic", ".heif", ".webp", ".tif", ".tiff", ".bmp"}
-
-# before/after filename conventions, most explicit first
-PAIR_RE = re.compile(r"^(?P<stem>.+?)[-_]{1,2}(?P<side>before|after)$", re.IGNORECASE)
-
-# a filename that looks like it carries a street address
-ADDRESS_RE = re.compile(
-    r"\b\d{1,6}\s*[-_ ]?(st|street|rd|road|dr|drive|ln|lane|ave|avenue|ct|court|way|blvd|hwy|circle|cir|trail|pkwy)\b",
-    re.IGNORECASE,
-)
-
-# A straight-off-the-camera filename: IMG_20260714_121904, DSC_0431, PXL_...,
-# 20260714_121904, GOPR0012 and friends. Publishing one of those as the visible
-# caption and alt text looks careless, so fall back to the category name.
-CAMERA_RE = re.compile(
-    r"^(?:img|dsc|dscn|dscf|pxl|gopr|dji|mvimg|photo|image|screenshot|untitled|p)"
-    r"[-_]?\d+(?:[-_]\d+)*$"
-    r"|^\d{8}[-_]\d{6}$"
-    r"|^\d{4,}$",
-    re.IGNORECASE,
-)
 
 GREEN, YELLOW, RED, DIM, OFF = "\033[92m", "\033[93m", "\033[91m", "\033[2m", "\033[0m"
 if os.name == "nt" and not os.environ.get("WT_SESSION"):
@@ -303,26 +283,6 @@ def write_jpeg(im, path, quality):
 
 
 # --------------------------------------------------------------------------
-# Naming
-# --------------------------------------------------------------------------
-def slugify(text):
-    text = re.sub(r"[^\w\s-]", "", text.lower())
-    text = re.sub(r"[\s_]+", "-", text).strip("-")
-    return re.sub(r"-{2,}", "-", text) or "photo"
-
-
-def humanise(stem):
-    words = re.sub(r"[-_]+", " ", stem).strip()
-    words = re.sub(r"\s+", " ", words)
-    small = {"a", "an", "and", "the", "in", "on", "at", "of", "for", "with", "to"}
-    out = []
-    for i, w in enumerate(words.split(" ")):
-        out.append(w if (w.isupper() and len(w) <= 3) else
-                   (w.lower() if (i and w.lower() in small) else w.capitalize()))
-    return " ".join(out)
-
-
-# --------------------------------------------------------------------------
 # Steps
 # --------------------------------------------------------------------------
 def ensure_dirs():
@@ -412,7 +372,9 @@ def intake():
         for c, l in CATEGORIES:
             say(f"       photo-inbox/{c}/".ljust(38) + f"({l})", YELLOW)
         say()
-        say("  Want a category that is not listed? Ask and it can be added.", YELLOW)
+        say("  Want a category that is not listed? Make a channel for it in", YELLOW)
+        say("  Discord and run  import-photos.cmd --setup  - or add a line to", YELLOW)
+        say("  photo-categories.json yourself.", YELLOW)
 
     if other_files:
         say()
@@ -495,6 +457,12 @@ def build(force=False):
         # caption comes from the filename, so flag anything address-shaped
         m = PAIR_RE.match(stem)
         caption_stem = m.group("stem") if m else stem
+
+        # Photo 3 of one job is <job>-3. All the photos of a job describe the
+        # same job, so drop the counter rather than captioning them
+        # "Cedar Deck Rebuild 2", "Cedar Deck Rebuild 3". Must happen AFTER
+        # PAIR_RE so that <job>-3-before still pairs with <job>-3-after.
+        caption_stem = strip_index(caption_stem)
 
         if CAMERA_RE.match(caption_stem.replace("_", "-")):
             # straight off the camera - use the category rather than publish
@@ -621,6 +589,12 @@ def main():
     say()
     say("  DECKED OUT LIVING - publishing photos", GREEN)
     say("  " + "-" * 46, DIM)
+
+    if CATEGORY_NOTES:
+        say()
+        say("  About your categories:", YELLOW)
+        for note in CATEGORY_NOTES:
+            say("    - " + note, YELLOW)
 
     ensure_dirs()
 
