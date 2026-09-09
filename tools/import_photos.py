@@ -91,6 +91,21 @@ def say(msg="", colour=""):
         print(text.encode(enc, "replace").decode(enc, "replace"))
 
 
+def how_to_run(args=""):
+    """How to start this tool, spelled out.
+
+    "Run:  import-photos.cmd --setup" reads as though "run" were part of the
+    command - and PowerShell will not start a script in the current folder
+    without a .\\ in front of it either. So never print a bare command: say
+    which folder, and give something that can be pasted as-is.
+    """
+    tail = (" " + args) if args else ""
+    return ("  Double-click  import-photos.cmd  in this folder:\n"
+            "      %s\n\n"
+            "  Or paste this into PowerShell:\n"
+            "      cd \"%s\"; .\\import-photos.cmd%s" % (ROOT, ROOT, tail))
+
+
 class Stop(Exception):
     """Something the user has to fix. The message is already plain English."""
 
@@ -140,20 +155,19 @@ def assert_secret_is_ignored():
 def load_secret():
     if not os.path.isfile(SECRET_PATH):
         raise Stop(
-            "Discord is not connected yet.\n\n"
-            "  Run:  import-photos.cmd --setup"
+            "Discord is not connected yet.\n\n" + how_to_run("--setup")
         )
     try:
         with open(SECRET_PATH, "r", encoding="utf-8") as fh:
             data = json.load(fh)
     except (ValueError, OSError) as exc:
         raise Stop(
-            "discord-bot.secret.json could not be read (%s).\n\n"
-            "  Run:  import-photos.cmd --setup" % exc
+            "discord-bot.secret.json could not be read (%s).\n\n" % exc
+            + how_to_run("--setup")
         )
     if not data.get("token"):
         raise Stop("discord-bot.secret.json has no token in it.\n\n"
-                   "  Run:  import-photos.cmd --setup")
+                   + how_to_run("--setup"))
     return data
 
 
@@ -934,7 +948,8 @@ def cmd_setup():
     say("  Your token is in discord-bot.secret.json and is NOT uploaded.", DIM)
     say("  If it ever leaks: discord.com/developers -> Bot -> Reset Token.", DIM)
     say()
-    say("  Now run:  import-photos.cmd", GREEN)
+    say("  Now import your photos:", GREEN)
+    say(how_to_run(), GREEN)
     say()
     return 0
 
@@ -1351,7 +1366,7 @@ def main():
     linked = [r for r in records if r.get("discordChannelId")]
     if not linked:
         raise Stop("No Discord channels are linked to a category yet.\n\n"
-                   "  Run:  import-photos.cmd --setup")
+                   + how_to_run("--setup"))
 
     # A channel added to the photo group since last time should not go
     # unnoticed, but creating a category is a decision, so ask rather than act.
@@ -1543,8 +1558,9 @@ def main():
 
     say()
     say("  " + "-" * 50, DIM)
-    say("  Have a look at the names in photo-inbox, then run:", GREEN)
-    say("      publish-photos.cmd", GREEN)
+    say("  Have a look at the names in photo-inbox, then", GREEN)
+    say("  double-click  publish-photos.cmd  in this folder:", GREEN)
+    say("      %s" % ROOT, GREEN)
     report_new_channels(new_channels, meta)
     say()
     return 0
@@ -1559,9 +1575,10 @@ def report_new_channels(names, meta):
         % ("" if len(names) == 1 else "s",
            meta.get("discordCategoryName", "your photo group"),
            ", ".join("#" + n for n in names)), YELLOW)
-    say("  Run  import-photos.cmd --setup  to turn %s into %s."
+    say("  To turn %s into %s, run setup again:"
         % ("it" if len(names) == 1 else "them",
            "a category" if len(names) == 1 else "categories"), YELLOW)
+    say(how_to_run("--setup"), YELLOW)
 
 
 if __name__ == "__main__":

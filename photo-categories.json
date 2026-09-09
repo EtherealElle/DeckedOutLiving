@@ -1,6 +1,10 @@
 {
-  "_readme": "The categories your photos are filed under. The order here is the order of the filter buttons on the gallery page. Adding a channel in Discord adds a category - run import-photos.cmd --setup. Deleting a line here does NOT delete photos.",
+  "_readme": "The categories your photos are filed under. The order here is the order of the filter buttons on the gallery page. They come from the channels inside the \"Pics\" category in Discord. Add or remove a channel there and run import-photos.cmd --setup to match. Deleting a line here does NOT delete photos.",
   "version": 1,
+  "discordCategory": {
+    "id": "1547017956016390256",
+    "name": "Pics"
+  },
   "categories": [
     {
       "id": "new-decks",
@@ -29,26 +33,32 @@
     {
       "id": "pergolas",
       "label": "Pergolas & Covered Structures",
-      "discordChannelId": null,
-      "discordChannelName": null
+      "discordChannelId": "1547018161604272158",
+      "discordChannelName": "pergolas"
     },
     {
       "id": "screened-porches",
       "label": "Screened Porches",
-      "discordChannelId": null,
-      "discordChannelName": null
+      "discordChannelId": "1547018399446466570",
+      "discordChannelName": "screened-porches"
     },
     {
       "id": "custom-woodwork",
       "label": "Custom Woodwork",
-      "discordChannelId": null,
-      "discordChannelName": null
+      "discordChannelId": "1547240806719692850",
+      "discordChannelName": "custom-woodwork"
     },
     {
       "id": "car-ports",
       "label": "Car Ports",
-      "discordChannelId": null,
-      "discordChannelName": null
+      "discordChannelId": "1547018099788746762",
+      "discordChannelName": "car-ports"
+    },
+    {
+      "id": "complete-remodel",
+      "label": "Complete Remodel",
+      "discordChannelId": "1547242044085506178",
+      "discordChannelName": "complete-remodel"
     }
   ]
 }

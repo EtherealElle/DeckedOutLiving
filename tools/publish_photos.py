@@ -646,7 +646,8 @@ def main():
         say("  STOP - do not publish. See the metadata failures above.", RED)
         return 1
 
-    say("  Done. Next: run publish-website.cmd to put these online.", GREEN)
+    say("  Done. To put these online, double-click  publish-website.cmd", GREEN)
+    say("  in this folder:  %s" % ROOT, GREEN)
     say()
     return 0
 
