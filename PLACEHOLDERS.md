@@ -152,10 +152,28 @@ Ordered by what actually blocks you.
       Until then the form says so honestly and offers call/text instead
 - [ ] **Confirm the four reviews** are genuine, or delete them
 - [ ] **Confirm the opening days** (Mon–Fri assumed)
-- [ ] **Add 6–10 job photos** — the empty states are designed and look
-      deliberate, but photos are what actually sell deck work
-- [ ] **Add at least one before/after pair** — name them `something-before.jpg`
-      and `something-after.jpg`. The single most persuasive thing on a deck site
+- [x] ~~Add job photos~~ — 4 published, all in Deck Repair
+- [x] ~~Add a before/after pair~~ — done, it is live on the slider
+- [ ] **Rename two photos.** `img-20260714-121904.jpg` and
+      `img-20260714-121914.jpg` are still camera filenames. The filename becomes
+      the visible caption and the alt text Google reads, so these currently fall
+      back to the generic "Deck Repair". Rename them in
+      `photo-originals/deck-repair/` to something descriptive
+      (`pergola-over-new-deck.jpg`), then run `publish-photos.cmd` again. The
+      same applies to `deck-before.jpg` / `deck-after.jpg`, which caption as
+      just "Deck"
+- [ ] **Re-save the five Discord photos properly.** `photo-inbox/car-ports/`,
+      `custom-woodwork/` and `new-decks/` contain `.url` shortcut files, not
+      images — dragging a picture out of Discord makes a link, not a copy. Open
+      each image, right-click, *Save image as...* into the folder, delete the
+      `.url` file, then run `publish-photos.cmd`
+- [ ] **Spread photos across the other seven services** — all four published
+      photos are in Deck Repair, so only that service card shows a photo. The
+      other seven show a branded tile until you add one for them
+- [ ] **Write the two new service pages' details.** Custom Woodwork and Car
+      Ports are live with full content, but I wrote them from general trade
+      knowledge, not from what you actually do. Read them and tell me anything
+      that is wrong or that you do not offer
 - [ ] Decide on **bonded** and **family-run / locally-owned** (section 3)
 - [ ] Set up a **Google Business Profile** — biggest single win for local search
 - [ ] Once live, submit to **Google Search Console** so you get found faster

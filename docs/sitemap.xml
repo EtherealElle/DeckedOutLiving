@@ -49,6 +49,18 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.deckedoutliving.net/services/custom-woodwork.html</loc>
+    <lastmod>2026-09-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.deckedoutliving.net/services/car-ports.html</loc>
+    <lastmod>2026-09-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.deckedoutliving.net/gallery.html</loc>
     <lastmod>2026-09-08</lastmod>
     <changefreq>weekly</changefreq>

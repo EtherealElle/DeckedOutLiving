@@ -535,3 +535,167 @@ a.card:hover .card-more{gap:10px}
 .nf{min-height:62vh;display:grid;place-items:center;text-align:center;padding:60px 20px}
 .nf .code{font-size:clamp(4rem,14vw,8rem);font-weight:900;color:var(--green);line-height:1;letter-spacing:-.04em}
 .nf-links{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:26px}
+
+/* ============================================================
+   MOBILE DENSITY
+   On a phone every grid collapsed to one column, which turned the
+   home page into ~14 screens of stacked text. These rules turn the
+   long stacks into swipeable rails and give the service cards a
+   photo band that fills itself in from the gallery.
+   Desktop layout is untouched.
+   ============================================================ */
+
+/* ---------- photo band on a service card ---------- */
+.card-photo{
+  position:relative;display:block;aspect-ratio:16/10;overflow:hidden;
+  border-radius:10px;margin:-6px 0 16px;background:var(--ink);
+}
+/* Empty state: a branded tile, not a grey hole. Faint deck boards
+   under the service icon, in the same line-art language as the logo. */
+.card-photo::before{
+  content:"";position:absolute;inset:0;
+  background:
+    repeating-linear-gradient(90deg,transparent 0 24px,rgba(255,255,255,.055) 24px 26px),
+    radial-gradient(120% 80% at 78% 12%,rgba(126,218,83,.16),transparent 60%);
+}
+.card-photo .ph{
+  position:absolute;inset:0;display:grid;place-items:center;color:var(--green);opacity:.85;
+}
+.card-photo img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:0;transition:opacity .3s ease;
+}
+.card-photo.has-photo img{opacity:1}
+.card-photo.has-photo::before,.card-photo.has-photo .ph{display:none}
+a.card:hover .card-photo img{transform:scale(1.04)}
+.card-photo img{transition:opacity .3s ease,transform .35s ease}
+/* a card with a photo does not also need the small icon chip */
+.card:has(.card-photo) .card-ico{display:none}
+
+/* ---------- swipeable rails (phones only) ---------- */
+@media (max-width:640px){
+  .rail{
+    display:grid;grid-auto-flow:column;gap:12px;
+    grid-auto-columns:80%;
+    overflow-x:auto;overscroll-behavior-x:contain;
+    scroll-snap-type:x proximity;
+    /* break out of .wrap so cards scroll edge to edge, but keep the inset */
+    margin-inline:-20px;padding:4px 20px 14px;
+    scrollbar-width:none;-ms-overflow-style:none;
+  }
+  .rail::-webkit-scrollbar{display:none}
+  .rail>*{scroll-snap-align:start;margin:0}
+  .rail .card{height:100%}
+
+  /* steps are short - fit more of the next one on screen */
+  .steps.rail{grid-auto-columns:74%;counter-reset:s;padding-top:20px}
+  .steps.rail li{margin-top:0}
+
+  /* reviews read better slightly narrower */
+  .rail-reviews{grid-auto-columns:84%}
+
+  /* the trust points are two lines each - two per row beats one */
+  .grid.compact-2{grid-template-columns:1fr 1fr;gap:10px}
+  .grid.compact-2 .card{padding:16px 14px}
+  .grid.compact-2 .card h3{font-size:.98rem;line-height:1.25}
+  .grid.compact-2 .card p{font-size:.85rem;line-height:1.45}
+  .grid.compact-2 .card-ico{width:36px;height:36px;border-radius:9px;margin-bottom:10px}
+  .grid.compact-2 .card-ico svg{width:19px;height:19px}
+
+  /* tighten the vertical rhythm generally */
+  .sec{padding:44px 0}
+  .sec-head{margin-bottom:22px}
+}
+
+/* a hint that there is more sideways, shown only where a rail is live */
+.rail-hint{display:none}
+@media (max-width:640px){
+  .rail-hint{
+    display:flex;align-items:center;gap:7px;justify-content:center;
+    font-size:.82rem;color:var(--ink-soft);margin:2px 0 0;
+  }
+  .sec-dark .rail-hint{color:rgba(255,255,255,.6)}
+  .rail-hint svg{animation:nudge 1.8s ease-in-out infinite}
+}
+@keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+@media (prefers-reduced-motion:reduce){.rail-hint svg{animation:none}}
+
+/* ---------- full-bleed photo strip ---------- */
+.strip-wrap{overflow:hidden}
+.strip{
+  display:grid;grid-auto-flow:column;grid-auto-columns:minmax(230px,1fr);gap:12px;
+  overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;
+  padding:2px 20px 14px;margin-inline:-20px;
+  scrollbar-width:none;-ms-overflow-style:none;
+}
+.strip::-webkit-scrollbar{display:none}
+.strip>*{scroll-snap-align:start}
+.strip .gal-item{aspect-ratio:4/3;margin:0}
+@media (min-width:641px){
+  .strip{grid-auto-columns:minmax(260px,1fr);padding-inline:0;margin-inline:0}
+}
+/* designed placeholder tiles for the strip before any photo exists */
+.strip-empty{
+  display:grid;grid-auto-flow:column;grid-auto-columns:minmax(230px,1fr);gap:12px;
+  padding:2px 20px 14px;margin-inline:-20px;overflow:hidden;
+}
+@media (min-width:641px){.strip-empty{padding-inline:0;margin-inline:0}}
+.strip-tile{
+  aspect-ratio:4/3;border-radius:var(--r-m);background:var(--ink);position:relative;overflow:hidden;
+  border:1px solid rgba(255,255,255,.07);
+}
+.strip-tile::before{
+  content:"";position:absolute;inset:0;
+  background:
+    repeating-linear-gradient(90deg,transparent 0 22px,rgba(255,255,255,.05) 22px 24px),
+    radial-gradient(120% 90% at 70% 10%,rgba(126,218,83,.14),transparent 62%);
+}
+.strip-tile svg{position:absolute;inset:0;margin:auto;color:var(--green);opacity:.5}
+.strip-tile:nth-child(2)::before{background:
+    repeating-linear-gradient(90deg,transparent 0 22px,rgba(255,255,255,.04) 22px 24px),
+    radial-gradient(120% 90% at 30% 20%,rgba(126,218,83,.10),transparent 62%)}
+.strip-tile:nth-child(3)::before{background:
+    repeating-linear-gradient(90deg,transparent 0 22px,rgba(255,255,255,.035) 22px 24px),
+    radial-gradient(120% 90% at 50% 80%,rgba(126,218,83,.08),transparent 62%)}
+
+/* Rail cards were still running to ~1000px tall on a phone because the
+   body copy wrapped so narrow. Clamp it: the card becomes a scannable
+   teaser and the full text lives on the service page it links to. */
+@media (max-width:640px){
+  .rail .card p,
+  .rail li p{
+    display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;
+    overflow:hidden;margin-bottom:0;
+  }
+  .rail-reviews .rev blockquote{
+    display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical;overflow:hidden;
+  }
+  .rail .card h3{font-size:1.02rem;line-height:1.22}
+  .rail .card{padding:16px 16px 18px}
+  .rail .card-more{margin-top:10px}
+  .rail .card-photo{margin:-4px 0 12px}
+
+  /* section headings were eating a third of a screen each */
+  h2{font-size:1.42rem}
+  .sec-head .lede{font-size:.98rem}
+  .sec-head.center{text-align:left;margin-inline:0}
+  .sec-head.center .eyebrow{justify-content:flex-start}
+}
+
+/* Rail fixes.
+   1. .grid.g3 / .steps set an explicit grid-template-columns. In rail mode the
+      auto-columns must win, or the first card is laid into an explicit 1fr
+      track and renders narrower than the rest. Needs .grid.rail (0,2,0) to
+      out-specify .grid.g3, not a bare .rail.
+   2. scroll-snap aligns a child's start with the scrollport's start, which
+      ignores the rail's own 20px padding and leaves it resting at
+      scrollLeft:20 with the first card clipped. scroll-padding fixes that.
+   3. "Learn more" must never wrap onto two lines. */
+@media (max-width:640px){
+  .grid.rail,
+  .steps.rail{
+    grid-template-columns:none;
+    scroll-padding-inline-start:20px;
+  }
+}
+.card-more{white-space:nowrap}

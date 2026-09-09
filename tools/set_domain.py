@@ -30,6 +30,8 @@ PAGES = [
     ("services/railing-installation.html", "0.8", "monthly"),
     ("services/pergolas-and-covered-structures.html", "0.8", "monthly"),
     ("services/screened-porches.html", "0.8", "monthly"),
+    ("services/custom-woodwork.html", "0.8", "monthly"),
+    ("services/car-ports.html", "0.8", "monthly"),
     ("gallery.html", "0.8", "weekly"),
     ("about.html", "0.6", "yearly"),
     ("contact.html", "0.9", "monthly"),

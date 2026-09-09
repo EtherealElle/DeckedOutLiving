@@ -38,8 +38,19 @@ photo-inbox/
 ├─ staining-sealing/
 ├─ railings/
 ├─ pergolas/
-└─ screened-porches/
+├─ screened-porches/
+├─ custom-woodwork/
+└─ car-ports/
 ```
+
+The folder names must match exactly. If you make a folder of your own, the tool
+will tell you it is being ignored and list the valid ones — it will not fail
+silently. Want a category that is not there? Ask and it can be added.
+
+**Photos have to be real image files.** Dragging a picture out of a browser,
+Discord, Google Photos or OneDrive gives you a `.url` shortcut, not the picture.
+Right-click the image and choose *Save image as...* instead. The tool spots
+shortcuts and says so in red.
 
 Then double-click `publish-photos.cmd`. It will:
 
@@ -103,14 +114,20 @@ Compatible** on the iPhone so it takes ordinary `.jpg` photos.
 ## What is on the site
 
 - Home
-- Six service pages — new decks, repair, staining & sealing, railings,
-  pergolas & covered structures, screened porches
+- Eight service pages — new decks, repair, staining & sealing, railings,
+  pergolas & covered structures, screened porches, custom woodwork, car ports
   *(separate pages rank better than one combined page)*
 - Gallery, About, Contact, and a 404 page
 
 Features: a before/after drag slider, a filterable gallery with a lightbox, a
 four-step estimate form, a sticky call/text/estimate bar on phones, and
 `LocalBusiness` structured data covering the full service area.
+
+**On a phone** the service cards, process steps and reviews become swipeable
+side-scrolling rails rather than one long stack, and each service card carries a
+photo band that fills itself in from the gallery as soon as you publish a photo
+in that category. Until then it shows a branded tile. That keeps the home page
+to roughly nine screens instead of fifteen.
 
 ---
 

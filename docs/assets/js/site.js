@@ -180,23 +180,76 @@
     sec.hidden = false;
   }
 
+  /* One fetch per file, shared by everything that needs it, so the
+     slider, the service cards and the gallery do not each hit the network. */
+  var cache = {};
   function loadJSON(path, cb) {
     if (!window.fetch) return;
-    fetch(BASE + path, { cache: 'no-cache' })
-      .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (d) { if (d) cb(d); })
-      .catch(function () { /* offline or not generated yet - empty states stand */ });
+    if (!cache[path]) {
+      cache[path] = fetch(BASE + path, { cache: 'no-cache' })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .catch(function () { return null; });
+    }
+    cache[path].then(function (d) { if (d) cb(d); });
+  }
+
+  /* ============================================================
+     SERVICE CARD PHOTOS
+     Each service card carries a photo band. Until a job photo exists
+     for that category the band shows a branded tile; once one does,
+     the newest photo drops straight in. Nobody edits HTML.
+     ============================================================ */
+  function fillServicePhotos(data) {
+    var bands = document.querySelectorAll('.card-photo[data-cat]');
+    if (!bands.length || !data || !data.photos || !data.photos.length) return;
+
+    Array.prototype.forEach.call(bands, function (band) {
+      var cat = band.getAttribute('data-cat');
+      var pick = null;
+      for (var i = 0; i < data.photos.length; i++) {
+        if (data.photos[i].category === cat) { pick = data.photos[i]; break; }
+      }
+      if (!pick) return; // no photo in this category yet - tile stays
+
+      var img = band.querySelector('img');
+      if (!img) return;
+      img.src = BASE + pick.web;
+      img.alt = pick.caption || pick.categoryLabel;
+      band.classList.add('has-photo');
+    });
+  }
+
+  /* A rail only needs a "swipe" hint when it actually overflows. */
+  function railHints() {
+    Array.prototype.forEach.call(document.querySelectorAll('.rail'), function (rail) {
+      if (rail.dataset.hinted) return;
+      if (rail.scrollWidth - rail.clientWidth < 24) return;
+      var p = document.createElement('p');
+      p.className = 'rail-hint';
+      p.innerHTML = 'Swipe for more <svg width="15" height="15" viewBox="0 0 24 24" fill="none" ' +
+        'stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ' +
+        'aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+      rail.parentNode.insertBefore(p, rail.nextSibling);
+      rail.dataset.hinted = '1';
+    });
   }
 
   if (document.getElementById('reviews')) {
     loadJSON('reviews.json', function (d) {
       renderReviews(Array.isArray(d) ? d : d.reviews);
+      railHints();
     });
   }
 
-  if (document.querySelector('.ba[data-auto]')) {
-    loadJSON('photos/gallery.json', hydrateSlider);
+  if (document.querySelector('.ba[data-auto]') || document.querySelector('.card-photo[data-cat]')) {
+    loadJSON('photos/gallery.json', function (d) {
+      hydrateSlider(d);
+      fillServicePhotos(d);
+    });
   }
+
+  railHints();
+  window.addEventListener('resize', railHints);
 
   /* Expose for gallery.js so it can reuse the same base + loader. */
   window.DOL = { base: BASE, loadJSON: loadJSON };

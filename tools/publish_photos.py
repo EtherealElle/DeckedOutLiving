@@ -82,6 +82,8 @@ CATEGORIES = [
     ("railings",         "Railings"),
     ("pergolas",         "Pergolas & Covered Structures"),
     ("screened-porches", "Screened Porches"),
+    ("custom-woodwork",  "Custom Woodwork"),
+    ("car-ports",        "Car Ports"),
 ]
 CATEGORY_LABEL = dict(CATEGORIES)
 
@@ -93,6 +95,17 @@ PAIR_RE = re.compile(r"^(?P<stem>.+?)[-_]{1,2}(?P<side>before|after)$", re.IGNOR
 # a filename that looks like it carries a street address
 ADDRESS_RE = re.compile(
     r"\b\d{1,6}\s*[-_ ]?(st|street|rd|road|dr|drive|ln|lane|ave|avenue|ct|court|way|blvd|hwy|circle|cir|trail|pkwy)\b",
+    re.IGNORECASE,
+)
+
+# A straight-off-the-camera filename: IMG_20260714_121904, DSC_0431, PXL_...,
+# 20260714_121904, GOPR0012 and friends. Publishing one of those as the visible
+# caption and alt text looks careless, so fall back to the category name.
+CAMERA_RE = re.compile(
+    r"^(?:img|dsc|dscn|dscf|pxl|gopr|dji|mvimg|photo|image|screenshot|untitled|p)"
+    r"[-_]?\d+(?:[-_]\d+)*$"
+    r"|^\d{8}[-_]\d{6}$"
+    r"|^\d{4,}$",
     re.IGNORECASE,
 )
 
@@ -319,10 +332,30 @@ def ensure_dirs():
         os.makedirs(os.path.join(PUBLISH, cat), exist_ok=True)
 
 
+# Dragging a picture out of a browser, Discord, Google Photos or OneDrive
+# drops a tiny shortcut file rather than the picture itself. It looks right
+# in Explorer and is not an image at all, so say so plainly.
+SHORTCUT_EXT = {".url", ".lnk", ".webloc", ".website"}
+
+
 def intake():
     """Move inbox files into the originals archive. Returns count moved."""
     moved = 0
     skipped_heic = []
+    shortcuts = []
+    other_files = []
+
+    known = {c for c, _ in CATEGORIES}
+
+    # Folders somebody made by hand that the tool does not publish from.
+    stray_dirs = []
+    if os.path.isdir(INBOX):
+        for entry in sorted(os.listdir(INBOX)):
+            p = os.path.join(INBOX, entry)
+            if os.path.isdir(p) and entry not in known and not entry.startswith("."):
+                n = sum(1 for f in os.listdir(p)
+                        if os.path.isfile(os.path.join(p, f)) and not f.endswith(".txt"))
+                stray_dirs.append((entry, n))
 
     for cat, _ in CATEGORIES:
         src_dir = os.path.join(INBOX, cat)
@@ -333,8 +366,12 @@ def intake():
             if not os.path.isfile(src) or name.startswith("."):
                 continue
             ext = os.path.splitext(name)[1].lower()
+            if ext in SHORTCUT_EXT:
+                shortcuts.append(f"{cat}/{name}")
+                continue
             if ext not in READABLE:
-                say(f"    skipped (not an image): {name}", DIM)
+                if ext != ".txt":
+                    other_files.append(f"{cat}/{name}")
                 continue
             if ext in (".heic", ".heif") and not HAVE_HEIC:
                 skipped_heic.append(f"{cat}/{name}")
@@ -349,6 +386,39 @@ def intake():
             shutil.move(src, dest)
             say(f"    filed  {cat}/{os.path.basename(dest)}", GREEN)
             moved += 1
+
+    if shortcuts:
+        say()
+        say("  !! THESE ARE NOT PHOTOS - they are shortcuts, and were skipped:", RED)
+        for f in shortcuts:
+            say(f"       {f}", RED)
+        say()
+        say("  A file ending .url or .lnk is a link to a picture somewhere else,", YELLOW)
+        say("  not the picture itself. Windows makes one of these when you DRAG", YELLOW)
+        say("  an image out of a browser, Discord, Google Photos or OneDrive.", YELLOW)
+        say()
+        say("  To fix it: open the image so it fills the screen, RIGHT-CLICK it", YELLOW)
+        say("  and choose 'Save image as...', save it into the inbox folder, then", YELLOW)
+        say("  delete the .url file and run me again.", YELLOW)
+
+    if stray_dirs:
+        say()
+        say("  These folders are not ones I publish from, so anything in them", YELLOW)
+        say("  was ignored:", YELLOW)
+        for d, n in stray_dirs:
+            say(f"       photo-inbox/{d}/   ({n} file{'' if n == 1 else 's'} inside)", YELLOW)
+        say()
+        say("  Photos must go in one of these folders, spelled exactly:", YELLOW)
+        for c, l in CATEGORIES:
+            say(f"       photo-inbox/{c}/".ljust(38) + f"({l})", YELLOW)
+        say()
+        say("  Want a category that is not listed? Ask and it can be added.", YELLOW)
+
+    if other_files:
+        say()
+        say("  Skipped - not a picture format I can read:", YELLOW)
+        for f in other_files:
+            say(f"       {f}", YELLOW)
 
     if skipped_heic:
         say()
@@ -425,7 +495,20 @@ def build(force=False):
         # caption comes from the filename, so flag anything address-shaped
         m = PAIR_RE.match(stem)
         caption_stem = m.group("stem") if m else stem
-        caption = humanise(caption_stem)
+
+        if CAMERA_RE.match(caption_stem.replace("_", "-")):
+            # straight off the camera - use the category rather than publish
+            # "Img 20260714 121904" as the caption a customer reads
+            caption = label
+            warnings.append(
+                f"{cat}/{name} still has its camera filename, so the caption falls "
+                f"back to \"{label}\". Rename it to something descriptive "
+                f"(e.g. \"cedar-deck-with-pergola.jpg\") and re-run me - the filename "
+                f"becomes the caption and the alt text Google reads."
+            )
+        else:
+            caption = humanise(caption_stem)
+
         if ADDRESS_RE.search(stem):
             warnings.append(
                 f"filename looks like a street address and becomes the public "
