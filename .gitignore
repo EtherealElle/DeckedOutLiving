@@ -44,3 +44,17 @@ discord-bot.secret.json
 # not worth uploading, and it names your channels.
 .import-state.json
 tools/.import-state.json
+
+# ---------------------------------------------------------------
+# Photos waiting to be published.
+#
+# These are the untouched originals straight off your phone, before
+# publish-photos.cmd strips the metadata out of them. They are the
+# same pictures that end up in photo-originals/, which is already
+# kept off GitHub - so these must be too.
+#
+# The empty folders themselves are kept, so the inbox structure
+# survives if this folder is ever copied to another computer.
+# ---------------------------------------------------------------
+photo-inbox/*/*
+!photo-inbox/*/.gitkeep
