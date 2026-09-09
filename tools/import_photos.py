@@ -773,29 +773,68 @@ def cmd_setup():
 
     # --- map whatever is not mapped yet -----------------------------------
     unmapped = [c for c in text if c["id"] not in mapped and c["id"] not in skipped]
-    accept_all = chosen is not None   # the group already answered "which ones"
-    if unmapped and not accept_all:
+
+    def suggestion(c):
+        s = slugify(c["name"])
+        return s if CATEGORY_ID_RE.match(s) else "channel-" + c["id"][-6:]
+
+    # Picking the group already answered "which channels". It did NOT answer
+    # "is #decks the same thing as New Decks" - and getting that wrong quietly
+    # creates a second category next to one that already has a service page.
+    # So a channel whose name matches an existing category is taken silently,
+    # and only the others are worth a question.
+    existing_now = {r["id"] for r in records}
+    exact = [c for c in unmapped if suggestion(c) in existing_now]
+    ambiguous = [c for c in unmapped if suggestion(c) not in existing_now]
+    accept_all = False
+
+    # Exact matches go first. Otherwise an ambiguous channel answered earlier in
+    # the list could claim the category that an exact match was about to fill,
+    # and the exact match would silently end up unlinked.
+    if chosen is not None:
+        unmapped = exact + ambiguous
+
+    if unmapped and (chosen is None or ambiguous):
         say()
-        say("  Now, which of these hold job photos?")
+        if chosen is not None and ambiguous:
+            say("  These channels do not match a category you already have:")
+        else:
+            say("  Now, which of these hold job photos?")
         say("  For each one:  Enter = make it a category,  s = skip it,", DIM)
         say("                 a number = file it into a category you already have,", DIM)
         say("                 A = accept every suggestion below.", DIM)
 
     for c in unmapped:
-        suggested_id = slugify(c["name"])
-        if not CATEGORY_ID_RE.match(suggested_id):
-            suggested_id = "channel-" + c["id"][-6:]
+        suggested_id = suggestion(c)
         existing_ids = [r["id"] for r in records]
 
-        if accept_all:
-            answer = ""
-        else:
-            say()
-            say("    #%s" % c["name"], YELLOW)
-            for i, r in enumerate(records, 1):
-                say("       %2d  %s" % (i, r["label"]), DIM)
-            answer = ask("    Enter=new category \"%s\"  /  s=skip  /  number  /  A: "
-                         % humanise(suggested_id))
+        # a channel named exactly like an existing category needs no question
+        auto = accept_all or (chosen is not None and suggested_id in existing_ids)
+
+        while True:
+            if auto:
+                answer = ""
+            else:
+                say()
+                say("    #%s" % c["name"], YELLOW)
+                for i, r in enumerate(records, 1):
+                    taken = r.get("discordChannelName")
+                    say("       %2d  %-30s %s"
+                        % (i, r["label"],
+                           ("already fed by #" + taken) if taken else ""), DIM)
+                answer = ask("    Enter=new category \"%s\"  /  s=skip  /  number  /  A: "
+                             % humanise(suggested_id))
+
+            # One category cannot be fed by two channels - the second would
+            # quietly unlink the first and nothing would say so.
+            if answer.isdigit() and 1 <= int(answer) <= len(records):
+                target = records[int(answer) - 1]
+                if target.get("discordChannelId") not in (None, c["id"]):
+                    say("    \"%s\" already takes its photos from #%s. Pick "
+                        "another, or press Enter for a new category."
+                        % (target["label"], target["discordChannelName"]), YELLOW)
+                    continue
+            break
 
         if answer.lower() == "a":
             accept_all = True
