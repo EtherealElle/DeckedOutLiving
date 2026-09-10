@@ -278,6 +278,11 @@
     var slot = document.querySelector('[data-hero]');
     if (!slot || !data || !data.photos || !data.photos.length) return;
 
+    // publish-photos.cmd stamps the real <img> into index.html so it works
+    // without JavaScript and the browser can preload it. If it is already
+    // there, leave it alone.
+    if (slot.querySelector('img')) return;
+
     var pick = pickHero(data.photos);
     if (!pick) return;
 

@@ -1,10 +1,10 @@
 {
-  "generated": "2026-09-10T17:28:48Z",
+  "generated": "2026-09-10T17:53:12Z",
   "categories": [
     {
       "id": "decks",
       "label": "Decks",
-      "count": 4
+      "count": 5
     },
     {
       "id": "pergolas",
@@ -19,12 +19,12 @@
     {
       "id": "custom-woodwork",
       "label": "Custom Woodwork",
-      "count": 12
+      "count": 13
     },
     {
       "id": "car-ports",
       "label": "Car Ports",
-      "count": 8
+      "count": 9
     },
     {
       "id": "complete-remodel",
@@ -33,6 +33,24 @@
     }
   ],
   "photos": [
+    {
+      "id": "decks/img-1747",
+      "category": "decks",
+      "categories": [
+        "decks"
+      ],
+      "categoryLabel": "Decks",
+      "categoryLabels": [
+        "Decks"
+      ],
+      "web": "photos/decks/img-1747.jpg",
+      "thumb": "photos/decks/img-1747-thumb.jpg",
+      "w": 900,
+      "h": 1600,
+      "tw": 450,
+      "th": 800,
+      "caption": "Decks"
+    },
     {
       "id": "pergolas/deck-rebuild-with-pergola-2",
       "category": "pergolas",
@@ -152,6 +170,24 @@
       "tw": 800,
       "th": 600,
       "caption": "Screened in Porch"
+    },
+    {
+      "id": "custom-woodwork/1000009624",
+      "category": "custom-woodwork",
+      "categories": [
+        "custom-woodwork"
+      ],
+      "categoryLabel": "Custom Woodwork",
+      "categoryLabels": [
+        "Custom Woodwork"
+      ],
+      "web": "photos/custom-woodwork/1000009624.jpg",
+      "thumb": "photos/custom-woodwork/1000009624-thumb.jpg",
+      "w": 1600,
+      "h": 1200,
+      "tw": 800,
+      "th": 600,
+      "caption": "Custom Woodwork"
     },
     {
       "id": "custom-woodwork/custom-outdoor-kitchen",
@@ -512,6 +548,24 @@
       "tw": 800,
       "th": 600,
       "caption": "Carport2"
+    },
+    {
+      "id": "car-ports/img-1958",
+      "category": "car-ports",
+      "categories": [
+        "car-ports"
+      ],
+      "categoryLabel": "Car Ports",
+      "categoryLabels": [
+        "Car Ports"
+      ],
+      "web": "photos/car-ports/img-1958.jpg",
+      "thumb": "photos/car-ports/img-1958-thumb.jpg",
+      "w": 1000,
+      "h": 1333,
+      "tw": 600,
+      "th": 800,
+      "caption": "Car Ports"
     },
     {
       "id": "complete-remodel/complete-exterior-painting-after",

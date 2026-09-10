@@ -33,6 +33,7 @@ import hashlib
 import io
 import json
 import os
+import re
 import shutil
 import sys
 from datetime import datetime, timezone
@@ -659,6 +660,76 @@ def build(force=False):
     return manifest, made, reused, warnings
 
 
+def stamp_hero(manifest):
+    """Write the chosen hero photo straight into docs/index.html.
+
+    site.js can fill the hero on its own, but a JavaScript-injected image
+    cannot be preloaded by the browser and is not there at all with JS off -
+    which on the front page means falling back to the placeholder drawing.
+    So the real <img> goes into the HTML. You still never edit it by hand;
+    this does it for you every time photos are published.
+    """
+    page = os.path.join(ROOT, "docs", "index.html")
+    if not os.path.isfile(page):
+        return None
+    with open(page, encoding="utf-8") as fh:
+        html = fh.read()
+
+    m = re.search(r'<figure class="hero-shot[^"]*" data-hero>', html)
+    if not m:
+        return None
+
+    photos = manifest.get("photos") or []
+    order = ["decks", "pergolas", "screened-porches",
+             "complete-remodel", "custom-woodwork", "car-ports"]
+
+    def pick():
+        for ph in photos:
+            if "hero" in ph.get("categories", []):
+                return ph
+        for cat in order:
+            for ph in photos:
+                if cat in ph.get("categories", []) and ph.get("badge") != "Before":
+                    return ph
+        return photos[0] if photos else None
+
+    chosen = pick()
+
+    # Drop any <img> stamped by a previous run so re-runs replace, not stack.
+    tail = html[m.end():]
+    tail = re.sub(r'\s*<img class="hero-img"[^>]*>', "", tail, count=1)
+
+    if not chosen:
+        html = html[:m.start()] + '<figure class="hero-shot" data-hero>' + tail
+    else:
+        alt = "%s by Decked Out Living in Griffin, GA" % (
+            chosen.get("caption") or "Recent work")
+        img = (
+            '\n          <img class="hero-img" src="%s"'
+            ' srcset="%s 800w, %s 1600w"'
+            ' sizes="(max-width: 860px) 100vw, 46vw"'
+            ' alt="%s" width="%s" height="%s"'
+            ' loading="eager" decoding="async" fetchpriority="high">'
+            % (chosen["thumb"], chosen["thumb"], chosen["web"],
+               alt.replace('"', "&quot;"),
+               chosen.get("w", ""), chosen.get("h", ""))
+        )
+        html = (html[:m.start()]
+                + '<figure class="hero-shot has-photo" data-hero>'
+                + img + tail)
+
+    cap = (chosen.get("caption") or "") if chosen else ""
+    hidden = "" if cap else " hidden"
+    html = re.sub(
+        r'<figcaption class="hero-shot-cap"[^>]*>[^<]*</figcaption>',
+        '<figcaption class="hero-shot-cap"%s>%s</figcaption>' % (hidden, cap),
+        html, count=1)
+
+    with open(page, "w", encoding="utf-8") as fh:
+        fh.write(html)
+    return chosen
+
+
 def prune():
     """Delete published files whose original is gone, so the site self-heals."""
     removed = 0
@@ -738,6 +809,12 @@ def main():
     if not made:
         say("    (everything already up to date)", DIM)
     prune()
+
+    # Put the chosen photo into the home page itself, rather than leaving the
+    # front page relying on JavaScript to show its main image.
+    hero = stamp_hero(manifest)
+    if hero:
+        say(f"    front page photo: {hero['caption']}", GREEN)
 
     say()
     say("  3. Checking every published file for leftover metadata")
