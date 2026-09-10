@@ -1,10 +1,10 @@
 {
-  "generated": "2026-09-10T17:53:12Z",
+  "generated": "2026-09-10T18:00:04Z",
   "categories": [
     {
       "id": "decks",
       "label": "Decks",
-      "count": 5
+      "count": 14
     },
     {
       "id": "pergolas",
@@ -14,17 +14,17 @@
     {
       "id": "screened-porches",
       "label": "Screened Porches",
-      "count": 2
+      "count": 3
     },
     {
       "id": "custom-woodwork",
       "label": "Custom Woodwork",
-      "count": 13
+      "count": 14
     },
     {
       "id": "car-ports",
       "label": "Car Ports",
-      "count": 9
+      "count": 10
     },
     {
       "id": "complete-remodel",
@@ -33,6 +33,168 @@
     }
   ],
   "photos": [
+    {
+      "id": "decks/1000009621",
+      "category": "decks",
+      "categories": [
+        "decks"
+      ],
+      "categoryLabel": "Decks",
+      "categoryLabels": [
+        "Decks"
+      ],
+      "web": "photos/decks/1000009621.jpg",
+      "thumb": "photos/decks/1000009621-thumb.jpg",
+      "w": 500,
+      "h": 667,
+      "tw": 500,
+      "th": 667,
+      "caption": "Decks"
+    },
+    {
+      "id": "decks/451003109-122094355082429924-741594845337347250-n",
+      "category": "decks",
+      "categories": [
+        "decks"
+      ],
+      "categoryLabel": "Decks",
+      "categoryLabels": [
+        "Decks"
+      ],
+      "web": "photos/decks/451003109-122094355082429924-741594845337347250-n.jpg",
+      "thumb": "photos/decks/451003109-122094355082429924-741594845337347250-n-thumb.jpg",
+      "w": 500,
+      "h": 667,
+      "tw": 500,
+      "th": 667,
+      "caption": "451003109 122094355082429924 741594845337347250 N"
+    },
+    {
+      "id": "decks/451003109-122094355082429924-741594845337347250",
+      "category": "decks",
+      "categories": [
+        "decks"
+      ],
+      "categoryLabel": "Decks",
+      "categoryLabels": [
+        "Decks"
+      ],
+      "web": "photos/decks/451003109-122094355082429924-741594845337347250.jpg",
+      "thumb": "photos/decks/451003109-122094355082429924-741594845337347250-thumb.jpg",
+      "w": 500,
+      "h": 667,
+      "tw": 500,
+      "th": 667,
+      "caption": "451003109 122094355082429924 741594845337347250"
+    },
+    {
+      "id": "decks/451016505-122094354506429924-6653875867426483728-n",
+      "category": "decks",
+      "categories": [
+        "decks"
+      ],
+      "categoryLabel": "Decks",
+      "categoryLabels": [
+        "Decks"
+      ],
+      "web": "photos/decks/451016505-122094354506429924-6653875867426483728-n.jpg",
+      "thumb": "photos/decks/451016505-122094354506429924-6653875867426483728-n-thumb.jpg",
+      "w": 500,
+      "h": 667,
+      "tw": 500,
+      "th": 667,
+      "caption": "451016505 122094354506429924 6653875867426483728 N"
+    },
+    {
+      "id": "decks/451044940-122094354332429924-7263107265766359938-n",
+      "category": "decks",
+      "categories": [
+        "decks"
+      ],
+      "categoryLabel": "Decks",
+      "categoryLabels": [
+        "Decks"
+      ],
+      "web": "photos/decks/451044940-122094354332429924-7263107265766359938-n.jpg",
+      "thumb": "photos/decks/451044940-122094354332429924-7263107265766359938-n-thumb.jpg",
+      "w": 500,
+      "h": 667,
+      "tw": 500,
+      "th": 667,
+      "caption": "451044940 122094354332429924 7263107265766359938 N"
+    },
+    {
+      "id": "decks/451257592-122094355244429924-2165513022102184285-n",
+      "category": "decks",
+      "categories": [
+        "decks"
+      ],
+      "categoryLabel": "Decks",
+      "categoryLabels": [
+        "Decks"
+      ],
+      "web": "photos/decks/451257592-122094355244429924-2165513022102184285-n.jpg",
+      "thumb": "photos/decks/451257592-122094355244429924-2165513022102184285-n-thumb.jpg",
+      "w": 500,
+      "h": 667,
+      "tw": 500,
+      "th": 667,
+      "caption": "451257592 122094355244429924 2165513022102184285 N"
+    },
+    {
+      "id": "decks/451266906-122094354518429924-3089579272803665626-n",
+      "category": "decks",
+      "categories": [
+        "decks"
+      ],
+      "categoryLabel": "Decks",
+      "categoryLabels": [
+        "Decks"
+      ],
+      "web": "photos/decks/451266906-122094354518429924-3089579272803665626-n.jpg",
+      "thumb": "photos/decks/451266906-122094354518429924-3089579272803665626-n-thumb.jpg",
+      "w": 500,
+      "h": 375,
+      "tw": 500,
+      "th": 375,
+      "caption": "451266906 122094354518429924 3089579272803665626 N"
+    },
+    {
+      "id": "decks/451399995-122094356438429924-7641438495528186738-n",
+      "category": "decks",
+      "categories": [
+        "decks"
+      ],
+      "categoryLabel": "Decks",
+      "categoryLabels": [
+        "Decks"
+      ],
+      "web": "photos/decks/451399995-122094356438429924-7641438495528186738-n.jpg",
+      "thumb": "photos/decks/451399995-122094356438429924-7641438495528186738-n-thumb.jpg",
+      "w": 500,
+      "h": 375,
+      "tw": 500,
+      "th": 375,
+      "caption": "451399995 122094356438429924 7641438495528186738 N"
+    },
+    {
+      "id": "decks/451488030-122094355004429924-2903821688316541267-n",
+      "category": "decks",
+      "categories": [
+        "decks"
+      ],
+      "categoryLabel": "Decks",
+      "categoryLabels": [
+        "Decks"
+      ],
+      "web": "photos/decks/451488030-122094355004429924-2903821688316541267-n.jpg",
+      "thumb": "photos/decks/451488030-122094355004429924-2903821688316541267-n-thumb.jpg",
+      "w": 500,
+      "h": 375,
+      "tw": 500,
+      "th": 375,
+      "caption": "451488030 122094355004429924 2903821688316541267 N"
+    },
     {
       "id": "decks/img-1747",
       "category": "decks",
@@ -136,6 +298,24 @@
       "badge": "Before"
     },
     {
+      "id": "screened-porches/451263876-122094354578429924-8350208444207114521-n",
+      "category": "screened-porches",
+      "categories": [
+        "screened-porches"
+      ],
+      "categoryLabel": "Screened Porches",
+      "categoryLabels": [
+        "Screened Porches"
+      ],
+      "web": "photos/screened-porches/451263876-122094354578429924-8350208444207114521-n.jpg",
+      "thumb": "photos/screened-porches/451263876-122094354578429924-8350208444207114521-n-thumb.jpg",
+      "w": 500,
+      "h": 667,
+      "tw": 500,
+      "th": 667,
+      "caption": "451263876 122094354578429924 8350208444207114521 N"
+    },
+    {
       "id": "screened-porches/screened-in-porch-2",
       "category": "screened-porches",
       "categories": [
@@ -206,6 +386,24 @@
       "tw": 800,
       "th": 600,
       "caption": "Custom Outdoor Kitchen"
+    },
+    {
+      "id": "custom-woodwork/img-1719",
+      "category": "custom-woodwork",
+      "categories": [
+        "custom-woodwork"
+      ],
+      "categoryLabel": "Custom Woodwork",
+      "categoryLabels": [
+        "Custom Woodwork"
+      ],
+      "web": "photos/custom-woodwork/img-1719.jpg",
+      "thumb": "photos/custom-woodwork/img-1719-thumb.jpg",
+      "w": 500,
+      "h": 666,
+      "tw": 500,
+      "th": 666,
+      "caption": "Custom Woodwork"
     },
     {
       "id": "custom-woodwork/tongue-groove-3-2",
@@ -404,6 +602,24 @@
       "tw": 600,
       "th": 800,
       "caption": "Custom Woodwork"
+    },
+    {
+      "id": "car-ports/451577480-122094355232429924-2028431364142299658-n",
+      "category": "car-ports",
+      "categories": [
+        "car-ports"
+      ],
+      "categoryLabel": "Car Ports",
+      "categoryLabels": [
+        "Car Ports"
+      ],
+      "web": "photos/car-ports/451577480-122094355232429924-2028431364142299658-n.jpg",
+      "thumb": "photos/car-ports/451577480-122094355232429924-2028431364142299658-n-thumb.jpg",
+      "w": 500,
+      "h": 375,
+      "tw": 500,
+      "th": 375,
+      "caption": "451577480 122094355232429924 2028431364142299658 N"
     },
     {
       "id": "car-ports/carport-2",
