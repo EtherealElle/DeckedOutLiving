@@ -7,26 +7,8 @@
   },
   "categories": [
     {
-      "id": "new-decks",
-      "label": "New Decks",
-      "discordChannelId": null,
-      "discordChannelName": null
-    },
-    {
-      "id": "deck-repair",
-      "label": "Deck Repair",
-      "discordChannelId": null,
-      "discordChannelName": null
-    },
-    {
-      "id": "staining-sealing",
-      "label": "Staining & Sealing",
-      "discordChannelId": null,
-      "discordChannelName": null
-    },
-    {
-      "id": "railings",
-      "label": "Railings",
+      "id": "decks",
+      "label": "Decks",
       "discordChannelId": null,
       "discordChannelName": null
     },

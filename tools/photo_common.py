@@ -22,14 +22,12 @@ CONFIG_NAME = "photo-categories.json"
 # fallback when photo-categories.json is missing or unreadable, so a stray
 # comma in a JSON file can never take the gallery down.
 DEFAULT_CATEGORIES = [
-    ("new-decks",        "New Decks"),
-    ("deck-repair",      "Deck Repair"),
-    ("staining-sealing", "Staining & Sealing"),
-    ("railings",         "Railings"),
+    ("decks",            "Decks"),
     ("pergolas",         "Pergolas & Covered Structures"),
     ("screened-porches", "Screened Porches"),
     ("custom-woodwork",  "Custom Woodwork"),
     ("car-ports",        "Car Ports"),
+    ("complete-remodel", "Complete Remodel"),
 ]
 
 # A category id becomes a folder name and an HTML data-cat value, so it has to
@@ -113,6 +111,53 @@ def numbered(stem, index, side=None):
     """
     out = stem if index <= 1 else "%s-%d" % (stem, index)
     return "%s-%s" % (out, side) if side else out
+
+
+# --------------------------------------------------------------------------
+# Extra categories
+# --------------------------------------------------------------------------
+# A job often belongs in more than one place: a deck with a pergola over it is
+# genuinely both. The folder (or Discord channel) gives the main category, and
+# any extras ride on the end of the filename after a "+":
+#
+#     cedar-deck-rebuild-2-after+pergolas.jpg
+#
+# "+" is safe as the separator precisely because slugify() strips it, so it can
+# never appear inside a job name by accident. The tags go LAST so that
+# everything before them - the -2 counter and the -before/-after suffix -
+# still parses exactly as it did before tags existed.
+#
+# Note for callers: split the tags off BEFORE calling slugify() on a stem.
+# slugify would eat the "+" and weld the tag onto the job name.
+TAG_SEP = "+"
+
+
+def split_tags(stem):
+    """'deck-rebuild-after+pergolas' -> ('deck-rebuild-after', ['pergolas'])."""
+    if TAG_SEP not in stem:
+        return stem, []
+    parts = stem.split(TAG_SEP)
+    base = parts[0]
+    tags = []
+    for raw in parts[1:]:
+        if not raw.strip():
+            continue
+        tag = slugify(raw)
+        if tag and tag not in tags:
+            tags.append(tag)
+    return (base or stem), tags
+
+
+def add_tags(stem, tags):
+    """Append extra-category tags to a stem, skipping blanks and repeats."""
+    base, existing = split_tags(stem)
+    for raw in tags or []:
+        if not str(raw).strip():
+            continue
+        tag = slugify(str(raw))
+        if tag and tag not in existing:
+            existing.append(tag)
+    return base + "".join(TAG_SEP + t for t in existing)
 
 
 # --------------------------------------------------------------------------

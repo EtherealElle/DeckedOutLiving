@@ -42,7 +42,8 @@ from datetime import datetime, timedelta, timezone
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from photo_common import (  # noqa: E402
     ADDRESS_RE, CATEGORY_ID_RE, READABLE,
-    humanise, numbered, read_category_config, slugify, write_category_config,
+    add_tags, humanise, numbered, read_category_config, slugify,
+    write_category_config,
 )
 
 # --------------------------------------------------------------------------
@@ -1037,6 +1038,10 @@ PAGE_HTML = r"""<!doctype html>
  .warn{color:#b3261e;font-size:13px;margin-top:8px;display:none}
  .warn.on{display:block}
  footer{padding:0 24px 60px;max-width:1100px;margin:0 auto;color:#666;font-size:14px}
+ .cats{margin-top:14px;padding-top:12px;border-top:1px solid #eee}
+ .cats>span{display:block;font-size:12px;color:#666;text-transform:uppercase;
+   letter-spacing:.08em;margin-bottom:8px}
+ .cats label{display:inline-flex;align-items:center;gap:6px;margin:0 14px 8px 0;font-size:14px}
  .done{padding:60px 24px;text-align:center}
  .done h2{color:var(--green)}
 </style></head><body>
@@ -1049,6 +1054,7 @@ PAGE_HTML = r"""<!doctype html>
 <footer id="foot"></footer>
 <script>
 const JOBS = __JOBS__;
+const CATS = __CATS__;
 const ADDRESS = /\b\d{1,6}\s*[-_ ]?(st|street|rd|road|dr|drive|ln|lane|ave|avenue|ct|court|way|blvd|hwy|circle|cir|trail|pkwy)\b/i;
 function slug(s){return s.toLowerCase().replace(/[^\w\s-]/g,"").replace(/[\s_]+/g,"-")
   .replace(/^-+|-+$/g,"").replace(/-{2,}/g,"-");}
@@ -1069,6 +1075,11 @@ JOBS.forEach((job,idx)=>{
       '<label><input type="radio" name="s'+idx+'" value="after"'+(job.side==="after"?" checked":"")+'> after photos</label>'+
       '<label><input type="radio" name="s'+idx+'" value=""'+(job.side?"":" checked")+'> neither</label>'+
     '</div>'+
+    '<div class="cats"><span>Also show under</span>'+
+      CATS.filter(c=>c.id!==job.category).map(c=>
+        '<label><input type="checkbox" name="c'+idx+'" value="'+c.id+'"'+
+        ((job.extra||[]).indexOf(c.id)>=0?" checked":"")+'> '+c.label+'</label>').join("")+
+    '</div>'+
     '<div class="preview" id="p'+idx+'"></div>'+
     '<div class="warn" id="w'+idx+'">That looks like a street address. It would be published as the caption.</div>';
   main.appendChild(el);
@@ -1076,22 +1087,27 @@ JOBS.forEach((job,idx)=>{
   const upd=()=>{
     const base=slug(inp.value)||job.fallback;
     const side=el.querySelector('input[name="s'+idx+'"]:checked').value;
-    const names=job.files.map((f,i)=>(i?base+"-"+(i+1):base)+(side?"-"+side:"")+f.ext);
+    const extra=[...el.querySelectorAll('input[name="c'+idx+'"]:checked')].map(c=>c.value);
+    const tags=extra.map(t=>"+"+t).join("");
+    const names=job.files.map((f,i)=>(i?base+"-"+(i+1):base)+(side?"-"+side:"")+tags+f.ext);
     document.getElementById("p"+idx).textContent=names.join("   ");
     document.getElementById("w"+idx).classList.toggle("on",ADDRESS.test(inp.value));
   };
   inp.addEventListener("input",upd);
-  el.querySelectorAll("input[type=radio]").forEach(r=>r.addEventListener("change",upd));
+  el.querySelectorAll("input[type=radio],input[type=checkbox]")
+    .forEach(r=>r.addEventListener("change",upd));
   upd();
 });
 document.getElementById("foot").textContent=
-  "Leave a box empty and those photos keep their untitled name - you can rename them in photo-inbox later.";
+  "Leave a name empty and those photos keep their untitled name. Tick “also show under” "+
+  "for a job that belongs in more than one place - a deck with a pergola over it is both.";
 document.getElementById("save").addEventListener("click",async e=>{
   e.target.disabled=true; e.target.textContent="Saving...";
   const payload=JOBS.map((job,idx)=>({
     messageId:job.messageId,
     name:document.getElementById("n"+idx).value,
-    side:document.querySelector('input[name="s'+idx+'"]:checked').value}));
+    side:document.querySelector('input[name="s'+idx+'"]:checked').value,
+    extra:[...document.querySelectorAll('input[name="c'+idx+'"]:checked')].map(c=>c.value)}));
   const r=await fetch("/save",{method:"POST",headers:{"Content-Type":"application/json"},
                               body:JSON.stringify(payload)});
   const res=await r.json();
@@ -1103,7 +1119,7 @@ document.getElementById("save").addEventListener("click",async e=>{
 """
 
 
-def naming_page(jobs, port=0):
+def naming_page(jobs, categories, port=0):
     """Show every job with its photos and take one name for each."""
     import http.server
     import threading
@@ -1120,13 +1136,17 @@ def naming_page(jobs, port=0):
             "side": j["side"] or "",
             "suggested": "" if not j["named"] else j["stem"].replace("-", " "),
             "fallback": j["stem"],
+            "extra": j.get("extra") or [],
             "files": [{"filename": f["filename"],
                        "ext": os.path.splitext(f["filename"])[1],
                        "viewable": os.path.splitext(f["filename"])[1].lower()
                        not in (".heic", ".heif", ".tif", ".tiff")}
                       for f in j["files"]],
         })
-    html = PAGE_HTML.replace("__JOBS__", json.dumps(payload)).encode("utf-8")
+    html = (PAGE_HTML
+            .replace("__JOBS__", json.dumps(payload))
+            .replace("__CATS__", json.dumps(categories))
+            .encode("utf-8"))
     by_message = {j["messageId"]: j for j in jobs}
 
     class Handler(http.server.BaseHTTPRequestHandler):
@@ -1205,17 +1225,22 @@ def apply_names(items, by_message):
             continue
         side = item.get("side") or None
         stem = slugify(typed)
+        # Categories ticked on the page ride on the end of the filename as
+        # "+tag". The job's own category comes from the folder, so it is never
+        # written as a tag.
+        extra = [t for t in (item.get("extra") or [])
+                 if t and t != job["category"]]
         folder = os.path.join(INBOX, job["category"])
         for i, f in enumerate(job["files"], start=1):
             ext = os.path.splitext(f["filename"])[1]
             src = os.path.join(folder, f["filename"])
             if not os.path.isfile(src):
                 continue
-            target = numbered(stem, i, side) + ext
+            target = add_tags(numbered(stem, i, side), extra) + ext
             dest = os.path.join(folder, target)
             bump = 2
             while os.path.exists(dest) and os.path.abspath(dest) != os.path.abspath(src):
-                target = numbered(stem + "-" + str(bump), i, side) + ext
+                target = add_tags(numbered(stem + "-" + str(bump), i, side), extra) + ext
                 dest = os.path.join(folder, target)
                 bump += 1
             if os.path.abspath(dest) == os.path.abspath(src):
@@ -1225,7 +1250,8 @@ def apply_names(items, by_message):
             f["filename"] = target
             renamed += 1
         state["messages"][job["messageId"]] = {
-            "jobName": stem, "side": side, "categoryId": job["category"]}
+            "jobName": stem, "side": side, "categoryId": job["category"],
+            "extra": extra}
     save_state(state)
     return renamed
 
@@ -1554,7 +1580,7 @@ def main():
         % (got, "" if got == 1 else "s"), GREEN)
 
     if jobs and not no_page:
-        naming_page(jobs)
+        naming_page(jobs, [{"id": c, "label": l} for c, l in categories])
 
     say()
     say("  " + "-" * 50, DIM)

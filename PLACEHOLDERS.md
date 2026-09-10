@@ -50,7 +50,24 @@ stronger claim.
 
 ---
 
-## 3. Claims still deliberately absent
+## 3. Services removed on 2026-09-09
+
+New Deck Construction, Deck Staining & Sealing and Railing Installation were
+deleted at your request, because no photos were ever filed under them. Their
+categories are gone from `photo-categories.json` too.
+
+Two consequences worth knowing:
+
+- **The site is live**, so those three URLs now return the 404 page. Nothing on
+  the site links to them any more, and almost nothing external will either on a
+  site this new — but that is the trade.
+- **New Deck Construction was the page targeting "deck builder Griffin GA."**
+  Say the word and it comes back in minutes; the writing still exists in git
+  history.
+
+---
+
+## 4. Claims still deliberately absent
 
 The site says **nothing** about any of these. The words do not appear:
 
@@ -65,7 +82,7 @@ Any of these can be added in minutes. Just confirm them.
 
 ---
 
-## 4. Details taken from your existing site — confirm these are current
+## 5. Details taken from your existing site — confirm these are current
 
 | Detail | Value used | Where it came from |
 |---|---|---|
@@ -76,7 +93,7 @@ Any of these can be added in minutes. Just confirm them.
 
 ---
 
-## 5. Opening hours — one assumption I had to make
+## 6. Opening hours — one assumption I had to make
 
 You said **7:30am–5:30pm** but not which days. Your existing site says
 Monday–Friday, so the site uses **Monday–Friday, 7:30am–5:30pm**.
@@ -89,7 +106,7 @@ shows these hours directly in search results.
 
 ---
 
-## 6. Your address — a decision to make
+## 7. Your address — a decision to make
 
 The site publishes **Griffin, GA** with no street address, and lists the full
 service area. That is the right setup for a business that travels to customers.
@@ -107,7 +124,7 @@ location. Harmless, but that is what they are.
 
 ---
 
-## 7. Customer reviews — imported, please verify
+## 8. Customer reviews — imported, please verify
 
 Four reviews from your existing site are in `docs/reviews.json` and show on the
 home and about pages:
@@ -126,7 +143,7 @@ Google's rules and can get a site penalised.
 
 ---
 
-## 8. Permits and code compliance — your decision, noted
+## 9. Permits and code compliance — your decision, noted
 
 You chose to leave permits off the site, and it is off. This is a note, not an
 argument.
@@ -141,7 +158,7 @@ it answers the next question a customer asks. **Say the word and I will add it.*
 
 ---
 
-## 9. Before it can go live
+## 10. Before it can go live
 
 Ordered by what actually blocks you.
 
@@ -177,13 +194,15 @@ Ordered by what actually blocks you.
       type becomes the caption on your website. Photos posted with no text land
       as `untitled-...` and caption as the bare category name until renamed —
       the naming page that opens after each import is the easy place to fix that
-- [ ] **Spread photos across the other seven services** — all four published
-      photos are in Deck Repair, so only that service card shows a photo. The
-      other seven show a branded tile until you add one for them
-- [ ] **Write the two new service pages' details.** Custom Woodwork and Car
-      Ports are live with full content, but I wrote them from general trade
-      knowledge, not from what you actually do. Read them and tell me anything
-      that is wrong or that you do not offer
+- [ ] **Read the Complete Remodel page and confirm the scope.** You said the
+      page should cover exterior *and* interior work, so it does. It claims:
+      siding, roofing, porches, windows, gutters, exterior painting, and inside
+      flooring, painting, trim and doors. That is what your photos actually
+      show. It deliberately does **not** claim kitchens, bathrooms, plumbing or
+      electrical — the FAQ says to ask about those. Tell me if you want any of
+      that added or removed
+- [ ] **Read the Custom Woodwork and Car Ports pages.** Still written from
+      general trade knowledge rather than from what you confirmed
 - [ ] Decide on **bonded** and **family-run / locally-owned** (section 3)
 - [ ] Set up a **Google Business Profile** — biggest single win for local search
 - [ ] Once live, submit to **Google Search Console** so you get found faster

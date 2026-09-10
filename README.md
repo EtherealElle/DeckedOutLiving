@@ -81,14 +81,12 @@ Drop files into the right folder and run one command. You never edit HTML.
 
 ```
 photo-inbox/
-├─ new-decks/
 ├─ deck-repair/
-├─ staining-sealing/
-├─ railings/
 ├─ pergolas/
 ├─ screened-porches/
 ├─ custom-woodwork/
-└─ car-ports/
+├─ car-ports/
+└─ complete-remodel/
 ```
 
 That list lives in `photo-categories.json`, which is also where each category is
@@ -100,6 +98,16 @@ Deleting a category from `photo-categories.json` does **not** delete its photos.
 If the folder still holds any, the tool keeps the category and says so. To
 retire one for real, delete its folders under `photo-originals/` and
 `docs/photos/`.
+
+**The same photo cannot be added twice.** Before filing anything, the tool
+hashes it and compares against every photo already archived, in every category.
+An identical picture is skipped, not filed under a new name — so dropping a
+photo in again after it is published does nothing, and you are told which file
+it already matches. Two genuinely different photos that happen to share a
+filename are both kept, as `name.jpg` and `name-2.jpg`.
+
+If you wanted a photo to appear under a second category, do not copy it — add a
+`+tag` to the file you already have (see below).
 
 **Photos have to be real image files.** Dragging a picture out of a browser,
 Discord, Google Photos or OneDrive gives you a `.url` shortcut, not the picture.
@@ -132,6 +140,30 @@ numbers and dollar amounts are stripped out automatically — but nothing can
 recognise a bare surname. Post photos with no text at all and they arrive named
 `untitled-...`, which is safe: the caption falls back to the category name and
 the tool tells you which ones to rename.
+
+### One job, more than one category
+
+A deck with a pergola over it genuinely belongs in both places. It does not need
+to be two copies of the same photo.
+
+When you name a job on the import page there is a row of tick boxes:
+**Also show under**. Tick Pergolas on a deck job and those photos appear under
+both filters in the gallery, and can front either service card — while still
+being one photo, counted once under "All work".
+
+Behind the scenes the extra categories are written onto the end of the filename
+after a `+`:
+
+```
+deck-rebuild-with-pergola-before+deck-repair.jpg
+```
+
+So you can do the same by hand for photos you copy in yourself — just add
+`+category-id` before the `.jpg`. The ids are the folder names listed above. A
+tag that is not a real category is reported rather than silently ignored.
+
+The `+` is safe as a separator because it can never appear in a job name: the
+slug rules strip it.
 
 ### Before/after pairs
 
@@ -176,10 +208,15 @@ Compatible** on the iPhone so it takes ordinary `.jpg` photos.
 ## What is on the site
 
 - Home
-- Eight service pages — new decks, repair, staining & sealing, railings,
-  pergolas & covered structures, screened porches, custom woodwork, car ports
+- Six service pages — deck repair, pergolas & covered structures, screened
+  porches, custom woodwork, car ports, complete remodel
   *(separate pages rank better than one combined page)*
 - Gallery, About, Contact, and a 404 page
+
+Every service page has photos behind it. New Deck Construction, Deck Staining &
+Sealing and Railing Installation were removed on 2026-09-09 because no photos
+were ever filed under them — if you start photographing that work, say so and
+the pages come back.
 
 Features: a before/after drag slider, a filterable gallery with a lightbox, a
 four-step estimate form, a sticky call/text/estimate bar on phones, and

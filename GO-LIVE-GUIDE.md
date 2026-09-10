@@ -130,41 +130,133 @@ send. But you want it working.
 The free plan covers 50 messages a month, which is plenty.
 
 ---
+## Step 7 — Move deckedoutliving.net across from Squarespace
 
-## Step 7 — Use your real domain (deckedoutliving.net)
+Only when the new site is finished and you are happy with it. **The moment this
+works, your old Squarespace site stops being what people see.**
 
-Only when you are ready to move off the old site.
+### What is true today
 
-1. In this folder, hold **Shift**, right-click empty space, choose
-   **Open PowerShell window here**, and run:
+Checked on 2026-09-10:
 
-   ```
-   python tools\set_domain.py https://www.deckedoutliving.net
-   ```
+| | Points at |
+|---|---|
+| `deckedoutliving.net` | `198.185.159.145` — Squarespace |
+| `www.deckedoutliving.net` | `ext-sq.squarespace.com` — Squarespace |
+| Who runs the DNS | Squarespace (your domain came over from Google Domains) |
+| Email on the domain | **None.** No MX records exist |
 
-   That updates the address Google reads, rewrites the sitemap, and creates the
-   file GitHub needs.
+That last row is the good news. The usual disaster here is someone deleting the
+records that carry their email. You have no email on this domain — yours is
+Gmail, which is completely separate — so there is nothing to break.
 
-2. Go to wherever you bought deckedoutliving.net (GoDaddy, Namecheap, Squarespace
-   — wherever you pay for it) and find the **DNS** settings. Add these:
+### 7a. Publish the new site FIRST
 
-   | Type | Name | Value |
-   |---|---|---|
-   | A | @ | 185.199.108.153 |
-   | A | @ | 185.199.109.153 |
-   | A | @ | 185.199.110.153 |
-   | A | @ | 185.199.111.153 |
-   | CNAME | www | `yourname.github.io` |
+Do not touch DNS until the github.io version is exactly what you want. Once the
+domain moves, whatever is on GitHub is what customers see.
 
-3. Back on GitHub: **Settings → Pages → Custom domain**, type
-   `www.deckedoutliving.net`, click **Save**.
-4. Wait. DNS changes can take anywhere from ten minutes to a day.
-5. When the **Enforce HTTPS** tick box becomes available, tick it. This gives
-   you the padlock in the address bar. Do not skip it.
-6. Run **`publish-website.cmd`**.
+```
+publish-website.cmd
+```
 
-Every link and image on the site is relative, so nothing else needs changing.
-The site works identically at both addresses.
+Then open **https://etherealelle.github.io/DeckedOutLiving/** and check it over
+on your phone.
+
+### 7b. Tell the site its new address
+
+In this folder, hold **Shift**, right-click empty space, **Open PowerShell
+window here**, then:
+
+```
+python tools\set_domain.py https://www.deckedoutliving.net
+```
+
+That updates the address Google reads, rewrites the sitemap, and writes the
+`CNAME` file GitHub needs. Then publish again:
+
+```
+publish-website.cmd
+```
+
+### 7c. Change the DNS in Squarespace
+
+1. Sign in at **squarespace.com**.
+2. Go to **Domains**, click **deckedoutliving.net**.
+3. Open **DNS** → **DNS Settings**.
+4. Find the **Custom Records** area.
+
+**Remove** these two — they are what point at the old site:
+
+| Type | Host | Value |
+|---|---|---|
+| A | `@` | `198.185.159.145` |
+| CNAME | `www` | `ext-sq.squarespace.com` |
+
+There may be several A records for `@`. Remove all of them. **Leave everything
+else alone**, even if you do not recognise it.
+
+**Add** these five:
+
+| Type | Host | Value |
+|---|---|---|
+| A | `@` | `185.199.108.153` |
+| A | `@` | `185.199.109.153` |
+| A | `@` | `185.199.110.153` |
+| A | `@` | `185.199.111.153` |
+| CNAME | `www` | `etherealelle.github.io` |
+
+Note the CNAME has **no `https://`** and **no trailing slash**. Some panels add
+a dot on the end by themselves — that is fine.
+
+*Optional, for people on IPv6 connections — add these four as well:*
+
+| Type | Host | Value |
+|---|---|---|
+| AAAA | `@` | `2606:50c0:8000::153` |
+| AAAA | `@` | `2606:50c0:8001::153` |
+| AAAA | `@` | `2606:50c0:8002::153` |
+| AAAA | `@` | `2606:50c0:8003::153` |
+
+### 7d. Tell GitHub the domain is yours
+
+1. Open your repository on GitHub → **Settings** → **Pages**.
+2. Under **Custom domain**, type `www.deckedoutliving.net` and **Save**.
+3. GitHub checks the DNS. A red warning at this point usually just means the
+   change has not spread yet — wait and reload.
+
+### 7e. Wait, then turn on the padlock
+
+DNS changes take anywhere from ten minutes to a day. Usually under an hour.
+
+When the **Enforce HTTPS** tick box on that Pages screen stops being greyed out,
+**tick it**. Do not skip this — without it browsers show "Not secure" next to
+your address, which costs you jobs.
+
+### Checking it worked
+
+In PowerShell:
+
+```
+nslookup deckedoutliving.net
+```
+
+Still showing `198.185...` means it has not spread yet. Showing `185.199...`
+means it has moved.
+
+### If it goes wrong
+
+Nothing is lost and it is reversible. In Squarespace DNS settings, delete the
+GitHub records and put the two Squarespace ones back:
+
+| Type | Host | Value |
+|---|---|---|
+| A | `@` | `198.185.159.145` |
+| CNAME | `www` | `ext-sq.squarespace.com` |
+
+**Keep paying for Squarespace until the new site has been live and correct for a
+week.** Cancelling early is the one genuinely hard thing to undo. The domain
+itself stays registered with Squarespace either way — you are only changing
+where it points, not moving the registration.
 
 ---
 

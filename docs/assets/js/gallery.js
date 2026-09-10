@@ -21,11 +21,19 @@
   var shown = [];
   var active = 'all';
 
+  /* A photo can belong to several categories - a deck with a pergola over it
+     is genuinely both. `categories` is the list; `category` is the main one,
+     kept for older gallery.json files that predate tagging. */
+  function inCategory(p, id) {
+    if (p.categories && p.categories.length) return p.categories.indexOf(id) !== -1;
+    return p.category === id;
+  }
+
   /* ---------- render ---------- */
   function render() {
     shown = active === 'all'
       ? photos.slice()
-      : photos.filter(function (p) { return p.category === active; });
+      : photos.filter(function (p) { return inCategory(p, active); });
 
     if (limit > 0) shown = shown.slice(0, limit);
 

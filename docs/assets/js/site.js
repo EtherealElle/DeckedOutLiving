@@ -203,17 +203,40 @@
     var bands = document.querySelectorAll('.card-photo[data-cat]');
     if (!bands.length || !data || !data.photos || !data.photos.length) return;
 
+    // Two cards showing the same picture looks like a mistake, and a job that
+    // is tagged into several categories would otherwise front all of them. So
+    // prefer a photo nothing else has taken, and prefer one whose MAIN
+    // category is this card's before falling back to a tagged-in one.
+    var used = {};
+
+    function candidates(cat) {
+      var primary = [], tagged = [];
+      for (var i = 0; i < data.photos.length; i++) {
+        var p = data.photos[i];
+        var cats = (p.categories && p.categories.length) ? p.categories : [p.category];
+        if (cats.indexOf(cat) === -1) continue;
+        (p.category === cat ? primary : tagged).push(p);
+      }
+      return primary.concat(tagged);
+    }
+
     Array.prototype.forEach.call(bands, function (band) {
       var cat = band.getAttribute('data-cat');
+      var list = candidates(cat);
       var pick = null;
-      for (var i = 0; i < data.photos.length; i++) {
-        if (data.photos[i].category === cat) { pick = data.photos[i]; break; }
+      for (var i = 0; i < list.length; i++) {
+        if (!used[list[i].web]) { pick = list[i]; break; }
       }
-      if (!pick) return; // no photo in this category yet - tile stays
+      if (!pick && list.length) pick = list[0];   // all taken - repeat rather than blank
+      if (!pick) return;                          // nothing in this category yet
+      used[pick.web] = true;
 
       var img = band.querySelector('img');
       if (!img) return;
-      img.src = BASE + pick.web;
+      // The card shows this at roughly 300px wide, so the 800px thumbnail is
+      // still sharp on a 3x phone screen and about a quarter of the bytes.
+      // Falls back to the full version if an old gallery.json has no thumb.
+      img.src = BASE + (pick.thumb || pick.web);
       img.alt = pick.caption || pick.categoryLabel;
       band.classList.add('has-photo');
     });

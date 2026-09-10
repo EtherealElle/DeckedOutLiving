@@ -29,6 +29,7 @@ Usage:
     python publish_photos.py --verify     only audit what is published
 """
 
+import hashlib
 import io
 import json
 import os
@@ -41,7 +42,7 @@ from datetime import datetime, timezone
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from photo_common import (  # noqa: E402
     ADDRESS_RE, CAMERA_RE, PAIR_RE, READABLE,
-    humanise, load_categories, slugify, strip_index,
+    add_tags, humanise, load_categories, slugify, split_tags, strip_index,
 )
 
 # --------------------------------------------------------------------------
@@ -160,6 +161,30 @@ def scan_jpeg_segments(path):
     return found
 
 
+def header_region(data):
+    """
+    Everything before the start-of-scan marker - i.e. the part of a JPEG that
+    can hold metadata. After SOS it is entropy-coded pixel data, where any byte
+    sequence can occur by chance.
+    """
+    i = 2
+    n = len(data)
+    while i < n - 1:
+        if data[i] != 0xFF:
+            i += 1
+            continue
+        marker = data[i + 1]
+        if marker in (0xFF, 0x01) or 0xD0 <= marker <= 0xD9:
+            i += 2
+            continue
+        if i + 4 > n:
+            break
+        if marker == 0xDA:          # start of scan
+            return data[:i]
+        i += 2 + int.from_bytes(data[i + 2:i + 4], "big")
+    return data
+
+
 def verify_clean(path):
     """
     Prove a published file carries no metadata. Three independent checks,
@@ -171,11 +196,16 @@ def verify_clean(path):
     # 1. byte-level JPEG segment walk
     problems += [f"segment present: {s}" for s in scan_jpeg_segments(path)]
 
-    # 2. raw substring scan of the whole file
+    # 2. byte-signature scan of the METADATA REGION only.
+    #    Scanning the whole file gives false alarms: "GPS" is three bytes, and
+    #    across a few hundred photos it turns up by chance inside the compressed
+    #    pixel data. Metadata can only live before the start-of-scan marker, so
+    #    that is the only part worth searching.
     with open(path, "rb") as fh:
         blob = fh.read()
+    head = header_region(blob)
     for needle in RISKY_STRINGS:
-        if needle in blob:
+        if needle in head:
             problems.append(f"byte signature found: {needle.decode('latin-1')}")
 
     # 3. ask Pillow what it can parse back out
@@ -298,12 +328,41 @@ def ensure_dirs():
 SHORTCUT_EXT = {".url", ".lnk", ".webloc", ".website"}
 
 
+def file_hash(path):
+    """SHA-256 of a file's bytes, read in chunks so a big photo is not slurped."""
+    h = hashlib.sha256()
+    with open(path, "rb") as fh:
+        for chunk in iter(lambda: fh.read(1 << 16), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def archive_hashes():
+    """content hash -> "category/filename" for everything already archived.
+
+    Keyed on content, not filename, and spanning every category. That is what
+    stops the same photo being filed twice - which used to happen two ways:
+    dropping a photo in again after it was published, and the same job being
+    added by hand under one category and imported from Discord under another.
+    A job that genuinely belongs in two places is a "+tag", not a second copy.
+    """
+    out = {}
+    for cat, _label, path, name in collect_originals():
+        try:
+            out.setdefault(file_hash(path), f"{cat}/{name}")
+        except OSError:
+            pass
+    return out
+
+
 def intake():
     """Move inbox files into the originals archive. Returns count moved."""
     moved = 0
     skipped_heic = []
     shortcuts = []
     other_files = []
+    already = []
+    seen_hashes = archive_hashes()
 
     known = {c for c, _ in CATEGORIES}
 
@@ -338,14 +397,41 @@ def intake():
                 continue
 
             stem, _ = os.path.splitext(name)
-            dest = os.path.join(ARCHIVE, cat, slugify(stem) + ext)
+            # Split the "+category" tags off BEFORE slugify, which strips "+"
+            # and would weld the tag onto the job name.
+            base, tags = split_tags(stem)
+
+            digest = file_hash(src)
+            if digest in seen_hashes:
+                already.append((f"{cat}/{name}", seen_hashes[digest]))
+                os.remove(src)
+                continue
+
+            dest = os.path.join(ARCHIVE, cat, add_tags(slugify(base), tags) + ext)
             n = 2
+            # Only reached when the CONTENT differs but the name collides -
+            # two genuinely different photos both called "deck.jpg".
             while os.path.exists(dest):
-                dest = os.path.join(ARCHIVE, cat, f"{slugify(stem)}-{n}{ext}")
+                dest = os.path.join(
+                    ARCHIVE, cat, add_tags(f"{slugify(base)}-{n}", tags) + ext)
                 n += 1
             shutil.move(src, dest)
+            seen_hashes[digest] = f"{cat}/{os.path.basename(dest)}"
             say(f"    filed  {cat}/{os.path.basename(dest)}", GREEN)
             moved += 1
+
+    if already:
+        say()
+        say("  Already had these - the same picture, byte for byte. Skipped:", YELLOW)
+        for dropped, existing in already:
+            say(f"       {dropped}", YELLOW)
+            say(f"         already filed as {existing}", DIM)
+        say()
+        say("  Nothing was lost: the copy you already had is untouched, and the", DIM)
+        say("  one in the inbox has been cleared away.", DIM)
+        say("  If you meant it to show under a second category, do not copy it -", DIM)
+        say("  add a tag to the existing file instead, e.g. rename it to", DIM)
+        say("      <name>+pergolas.jpg", DIM)
 
     if shortcuts:
         say()
@@ -422,7 +508,11 @@ def build(force=False):
     reused = 0
 
     for cat, label, src, name in collect_originals():
-        stem = os.path.splitext(name)[0]
+        raw_stem = os.path.splitext(name)[0]
+        # Extra categories ride on the end of the filename after a "+". Split
+        # them off FIRST: slugify() strips "+" and would weld the tag onto the
+        # job name, turning "deck+pergolas" into "deckpergolas".
+        stem, tags = split_tags(raw_stem)
         slug = slugify(stem)
 
         out_dir = os.path.join(PUBLISH, cat)
@@ -483,10 +573,30 @@ def build(force=False):
                 f"caption: {cat}/{name}  ->  \"{caption}\""
             )
 
+        # A job can sit in more than one category - a deck with a pergola over
+        # it belongs in both. The folder gives the main one; the "+" tags add
+        # the rest. Unknown tags are reported rather than silently dropped,
+        # because a typo would otherwise just quietly do nothing.
+        categories = [cat]
+        for tag in tags:
+            if tag == cat:
+                continue
+            if tag in CATEGORY_LABEL:
+                if tag not in categories:
+                    categories.append(tag)
+            else:
+                known = ", ".join(c for c, _ in CATEGORIES)
+                warnings.append(
+                    f"{cat}/{name} is tagged \"+{tag}\", which is not a category. "
+                    f"It has been ignored. Valid ones are: {known}"
+                )
+
         rec = {
             "id": f"{cat}/{slug}",
-            "category": cat,
+            "category": cat,                 # the main one, from the folder
+            "categories": categories,        # main + any "+" tags
             "categoryLabel": label,
+            "categoryLabels": [CATEGORY_LABEL.get(c, c) for c in categories],
             "web": f"photos/{cat}/{slug}.jpg",
             "thumb": f"photos/{cat}/{slug}-thumb.jpg",
             "w": w, "h": h, "tw": tw, "th": th,
@@ -519,9 +629,12 @@ def build(force=False):
                 f"{'after' if have == 'before' else 'before'} file to show as a slider"
             )
 
+    # A photo tagged into two categories counts towards both, so the filter
+    # button totals match what the gallery actually shows when clicked.
     counts = {}
     for p in photos:
-        counts[p["category"]] = counts.get(p["category"], 0) + 1
+        for c in p["categories"]:
+            counts[c] = counts.get(c, 0) + 1
 
     manifest = {
         "generated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -545,7 +658,10 @@ def prune():
     removed = 0
     keep = set()
     for cat, _, _, name in collect_originals():
-        slug = slugify(os.path.splitext(name)[0])
+        # Same split as build(), or a tagged original would map to a different
+        # slug here and its published files would be deleted as orphans.
+        base, _tags = split_tags(os.path.splitext(name)[0])
+        slug = slugify(base)
         keep.add(os.path.join(PUBLISH, cat, slug + ".jpg"))
         keep.add(os.path.join(PUBLISH, cat, slug + "-thumb.jpg"))
 

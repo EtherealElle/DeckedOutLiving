@@ -24,14 +24,12 @@ DOCS = os.path.join(ROOT, "docs")
 PAGES = [
     ("index.html", "1.0", "weekly"),
     ("services/index.html", "0.9", "monthly"),
-    ("services/new-deck-construction.html", "0.9", "monthly"),
-    ("services/deck-repair.html", "0.9", "monthly"),
-    ("services/deck-staining-and-sealing.html", "0.8", "monthly"),
-    ("services/railing-installation.html", "0.8", "monthly"),
+    ("services/decks.html", "0.9", "monthly"),
     ("services/pergolas-and-covered-structures.html", "0.8", "monthly"),
     ("services/screened-porches.html", "0.8", "monthly"),
     ("services/custom-woodwork.html", "0.8", "monthly"),
     ("services/car-ports.html", "0.8", "monthly"),
+    ("services/complete-remodel.html", "0.8", "monthly"),
     ("gallery.html", "0.8", "weekly"),
     ("about.html", "0.6", "yearly"),
     ("contact.html", "0.9", "monthly"),
@@ -122,13 +120,34 @@ def main():
         with open(cname_path, "w", encoding="utf-8") as fh:
             fh.write(host + "\n")
         print(f"Wrote CNAME for {host}.")
-        print("\nRemember to add these DNS records at your domain registrar:")
-        print("    A     @   185.199.108.153")
-        print("    A     @   185.199.109.153")
-        print("    A     @   185.199.110.153")
-        print("    A     @   185.199.111.153")
+        print()
+        print("Now set these DNS records where the domain is managed.")
+        print("For deckedoutliving.net that is Squarespace:")
+        print("    Domains > deckedoutliving.net > DNS > DNS Settings > Custom Records")
+        print()
+        print("  REMOVE the records pointing at the old site:")
+        print("    A     @    198.185.159.145         (Squarespace)")
+        print("    CNAME www  ext-sq.squarespace.com  (Squarespace)")
+        print()
+        print("  ADD:")
+        print("    A     @    185.199.108.153")
+        print("    A     @    185.199.109.153")
+        print("    A     @    185.199.110.153")
+        print("    A     @    185.199.111.153")
         if host.startswith("www."):
-            print(f"    CNAME www <your-github-username>.github.io")
+            print("    CNAME www  etherealelle.github.io")
+        print()
+        print("  Optional, for visitors on IPv6:")
+        print("    AAAA  @    2606:50c0:8000::153")
+        print("    AAAA  @    2606:50c0:8001::153")
+        print("    AAAA  @    2606:50c0:8002::153")
+        print("    AAAA  @    2606:50c0:8003::153")
+        print()
+        print("  Leave every other record alone.")
+        print("  Then on GitHub: Settings > Pages > Custom domain > " + host)
+        print("  and tick Enforce HTTPS once it stops being greyed out.")
+        print()
+        print("  Full walkthrough: GO-LIVE-GUIDE.md, Step 7.")
 
     print("\nNow run publish-website.cmd to put the change online.")
     return 0

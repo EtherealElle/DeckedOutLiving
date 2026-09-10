@@ -1,9 +1,9 @@
 {
-  "generated": "2026-09-09T14:29:33Z",
+  "generated": "2026-09-10T16:31:06Z",
   "categories": [
     {
-      "id": "deck-repair",
-      "label": "Deck Repair",
+      "id": "decks",
+      "label": "Decks",
       "count": 4
     },
     {
@@ -29,76 +29,42 @@
     {
       "id": "complete-remodel",
       "label": "Complete Remodel",
-      "count": 18
+      "count": 17
     }
   ],
   "photos": [
     {
-      "id": "deck-repair/deck-after",
-      "category": "deck-repair",
-      "categoryLabel": "Deck Repair",
-      "web": "photos/deck-repair/deck-after.jpg",
-      "thumb": "photos/deck-repair/deck-after-thumb.jpg",
-      "w": 1600,
-      "h": 1200,
-      "tw": 800,
-      "th": 600,
-      "caption": "Deck",
-      "badge": "After"
-    },
-    {
-      "id": "deck-repair/deck-before",
-      "category": "deck-repair",
-      "categoryLabel": "Deck Repair",
-      "web": "photos/deck-repair/deck-before.jpg",
-      "thumb": "photos/deck-repair/deck-before-thumb.jpg",
-      "w": 960,
-      "h": 1280,
-      "tw": 600,
-      "th": 800,
-      "caption": "Deck",
-      "badge": "Before"
-    },
-    {
-      "id": "deck-repair/img-20260714-121904",
-      "category": "deck-repair",
-      "categoryLabel": "Deck Repair",
-      "web": "photos/deck-repair/img-20260714-121904.jpg",
-      "thumb": "photos/deck-repair/img-20260714-121904-thumb.jpg",
-      "w": 1600,
-      "h": 1200,
-      "tw": 800,
-      "th": 600,
-      "caption": "Deck Repair"
-    },
-    {
-      "id": "deck-repair/img-20260714-121914",
-      "category": "deck-repair",
-      "categoryLabel": "Deck Repair",
-      "web": "photos/deck-repair/img-20260714-121914.jpg",
-      "thumb": "photos/deck-repair/img-20260714-121914-thumb.jpg",
-      "w": 1600,
-      "h": 1200,
-      "tw": 800,
-      "th": 600,
-      "caption": "Deck Repair"
-    },
-    {
       "id": "pergolas/deck-rebuild-with-pergola-2",
       "category": "pergolas",
+      "categories": [
+        "pergolas",
+        "decks"
+      ],
       "categoryLabel": "Pergolas & Covered Structures",
+      "categoryLabels": [
+        "Pergolas & Covered Structures",
+        "Decks"
+      ],
       "web": "photos/pergolas/deck-rebuild-with-pergola-2.jpg",
       "thumb": "photos/pergolas/deck-rebuild-with-pergola-2-thumb.jpg",
-      "w": 960,
-      "h": 1280,
-      "tw": 600,
-      "th": 800,
+      "w": 1600,
+      "h": 1200,
+      "tw": 800,
+      "th": 600,
       "caption": "Deck Rebuild with Pergola"
     },
     {
       "id": "pergolas/deck-rebuild-with-pergola-3",
       "category": "pergolas",
+      "categories": [
+        "pergolas",
+        "decks"
+      ],
       "categoryLabel": "Pergolas & Covered Structures",
+      "categoryLabels": [
+        "Pergolas & Covered Structures",
+        "Decks"
+      ],
       "web": "photos/pergolas/deck-rebuild-with-pergola-3.jpg",
       "thumb": "photos/pergolas/deck-rebuild-with-pergola-3-thumb.jpg",
       "w": 1600,
@@ -108,33 +74,57 @@
       "caption": "Deck Rebuild with Pergola"
     },
     {
-      "id": "pergolas/deck-rebuild-with-pergola-4",
+      "id": "pergolas/deck-rebuild-with-pergola-after",
       "category": "pergolas",
+      "categories": [
+        "pergolas",
+        "decks"
+      ],
       "categoryLabel": "Pergolas & Covered Structures",
-      "web": "photos/pergolas/deck-rebuild-with-pergola-4.jpg",
-      "thumb": "photos/pergolas/deck-rebuild-with-pergola-4-thumb.jpg",
+      "categoryLabels": [
+        "Pergolas & Covered Structures",
+        "Decks"
+      ],
+      "web": "photos/pergolas/deck-rebuild-with-pergola-after.jpg",
+      "thumb": "photos/pergolas/deck-rebuild-with-pergola-after-thumb.jpg",
       "w": 1600,
       "h": 1200,
       "tw": 800,
       "th": 600,
-      "caption": "Deck Rebuild with Pergola"
+      "caption": "Deck Rebuild with Pergola",
+      "badge": "After"
     },
     {
-      "id": "pergolas/deck-rebuild-with-pergola",
+      "id": "pergolas/deck-rebuild-with-pergola-before",
       "category": "pergolas",
+      "categories": [
+        "pergolas",
+        "decks"
+      ],
       "categoryLabel": "Pergolas & Covered Structures",
-      "web": "photos/pergolas/deck-rebuild-with-pergola.jpg",
-      "thumb": "photos/pergolas/deck-rebuild-with-pergola-thumb.jpg",
-      "w": 1600,
-      "h": 1200,
-      "tw": 800,
-      "th": 600,
-      "caption": "Deck Rebuild with Pergola"
+      "categoryLabels": [
+        "Pergolas & Covered Structures",
+        "Decks"
+      ],
+      "web": "photos/pergolas/deck-rebuild-with-pergola-before.jpg",
+      "thumb": "photos/pergolas/deck-rebuild-with-pergola-before-thumb.jpg",
+      "w": 960,
+      "h": 1280,
+      "tw": 600,
+      "th": 800,
+      "caption": "Deck Rebuild with Pergola",
+      "badge": "Before"
     },
     {
       "id": "screened-porches/screened-in-porch-2",
       "category": "screened-porches",
+      "categories": [
+        "screened-porches"
+      ],
       "categoryLabel": "Screened Porches",
+      "categoryLabels": [
+        "Screened Porches"
+      ],
       "web": "photos/screened-porches/screened-in-porch-2.jpg",
       "thumb": "photos/screened-porches/screened-in-porch-2-thumb.jpg",
       "w": 1600,
@@ -146,7 +136,13 @@
     {
       "id": "screened-porches/screened-in-porch",
       "category": "screened-porches",
+      "categories": [
+        "screened-porches"
+      ],
       "categoryLabel": "Screened Porches",
+      "categoryLabels": [
+        "Screened Porches"
+      ],
       "web": "photos/screened-porches/screened-in-porch.jpg",
       "thumb": "photos/screened-porches/screened-in-porch-thumb.jpg",
       "w": 1600,
@@ -158,7 +154,13 @@
     {
       "id": "custom-woodwork/custom-outdoor-kitchen",
       "category": "custom-woodwork",
+      "categories": [
+        "custom-woodwork"
+      ],
       "categoryLabel": "Custom Woodwork",
+      "categoryLabels": [
+        "Custom Woodwork"
+      ],
       "web": "photos/custom-woodwork/custom-outdoor-kitchen.jpg",
       "thumb": "photos/custom-woodwork/custom-outdoor-kitchen-thumb.jpg",
       "w": 1600,
@@ -170,7 +172,13 @@
     {
       "id": "custom-woodwork/tongue-groove-3-2",
       "category": "custom-woodwork",
+      "categories": [
+        "custom-woodwork"
+      ],
       "categoryLabel": "Custom Woodwork",
+      "categoryLabels": [
+        "Custom Woodwork"
+      ],
       "web": "photos/custom-woodwork/tongue-groove-3-2.jpg",
       "thumb": "photos/custom-woodwork/tongue-groove-3-2-thumb.jpg",
       "w": 1200,
@@ -182,7 +190,13 @@
     {
       "id": "custom-woodwork/tongue-groove-3",
       "category": "custom-woodwork",
+      "categories": [
+        "custom-woodwork"
+      ],
       "categoryLabel": "Custom Woodwork",
+      "categoryLabels": [
+        "Custom Woodwork"
+      ],
       "web": "photos/custom-woodwork/tongue-groove-3.jpg",
       "thumb": "photos/custom-woodwork/tongue-groove-3-thumb.jpg",
       "w": 1200,
@@ -194,7 +208,13 @@
     {
       "id": "custom-woodwork/tongue-groove-4-2",
       "category": "custom-woodwork",
+      "categories": [
+        "custom-woodwork"
+      ],
       "categoryLabel": "Custom Woodwork",
+      "categoryLabels": [
+        "Custom Woodwork"
+      ],
       "web": "photos/custom-woodwork/tongue-groove-4-2.jpg",
       "thumb": "photos/custom-woodwork/tongue-groove-4-2-thumb.jpg",
       "w": 1200,
@@ -206,7 +226,13 @@
     {
       "id": "custom-woodwork/tongue-groove-4-3",
       "category": "custom-woodwork",
+      "categories": [
+        "custom-woodwork"
+      ],
       "categoryLabel": "Custom Woodwork",
+      "categoryLabels": [
+        "Custom Woodwork"
+      ],
       "web": "photos/custom-woodwork/tongue-groove-4-3.jpg",
       "thumb": "photos/custom-woodwork/tongue-groove-4-3-thumb.jpg",
       "w": 1200,
@@ -218,7 +244,13 @@
     {
       "id": "custom-woodwork/tongue-groove-4-4",
       "category": "custom-woodwork",
+      "categories": [
+        "custom-woodwork"
+      ],
       "categoryLabel": "Custom Woodwork",
+      "categoryLabels": [
+        "Custom Woodwork"
+      ],
       "web": "photos/custom-woodwork/tongue-groove-4-4.jpg",
       "thumb": "photos/custom-woodwork/tongue-groove-4-4-thumb.jpg",
       "w": 1200,
@@ -230,7 +262,13 @@
     {
       "id": "custom-woodwork/tongue-groove-4",
       "category": "custom-woodwork",
+      "categories": [
+        "custom-woodwork"
+      ],
       "categoryLabel": "Custom Woodwork",
+      "categoryLabels": [
+        "Custom Woodwork"
+      ],
       "web": "photos/custom-woodwork/tongue-groove-4.jpg",
       "thumb": "photos/custom-woodwork/tongue-groove-4-thumb.jpg",
       "w": 1200,
@@ -242,7 +280,13 @@
     {
       "id": "custom-woodwork/tongue-groove",
       "category": "custom-woodwork",
+      "categories": [
+        "custom-woodwork"
+      ],
       "categoryLabel": "Custom Woodwork",
+      "categoryLabels": [
+        "Custom Woodwork"
+      ],
       "web": "photos/custom-woodwork/tongue-groove.jpg",
       "thumb": "photos/custom-woodwork/tongue-groove-thumb.jpg",
       "w": 747,
@@ -254,7 +298,13 @@
     {
       "id": "custom-woodwork/tongue-groove2-2",
       "category": "custom-woodwork",
+      "categories": [
+        "custom-woodwork"
+      ],
       "categoryLabel": "Custom Woodwork",
+      "categoryLabels": [
+        "Custom Woodwork"
+      ],
       "web": "photos/custom-woodwork/tongue-groove2-2.jpg",
       "thumb": "photos/custom-woodwork/tongue-groove2-2-thumb.jpg",
       "w": 1600,
@@ -266,7 +316,13 @@
     {
       "id": "custom-woodwork/tongue-groove2",
       "category": "custom-woodwork",
+      "categories": [
+        "custom-woodwork"
+      ],
       "categoryLabel": "Custom Woodwork",
+      "categoryLabels": [
+        "Custom Woodwork"
+      ],
       "web": "photos/custom-woodwork/tongue-groove2.jpg",
       "thumb": "photos/custom-woodwork/tongue-groove2-thumb.jpg",
       "w": 1600,
@@ -278,7 +334,13 @@
     {
       "id": "custom-woodwork/untitled-20260909-1280-2",
       "category": "custom-woodwork",
+      "categories": [
+        "custom-woodwork"
+      ],
       "categoryLabel": "Custom Woodwork",
+      "categoryLabels": [
+        "Custom Woodwork"
+      ],
       "web": "photos/custom-woodwork/untitled-20260909-1280-2.jpg",
       "thumb": "photos/custom-woodwork/untitled-20260909-1280-2-thumb.jpg",
       "w": 1200,
@@ -290,7 +352,13 @@
     {
       "id": "custom-woodwork/untitled-20260909-1280",
       "category": "custom-woodwork",
+      "categories": [
+        "custom-woodwork"
+      ],
       "categoryLabel": "Custom Woodwork",
+      "categoryLabels": [
+        "Custom Woodwork"
+      ],
       "web": "photos/custom-woodwork/untitled-20260909-1280.jpg",
       "thumb": "photos/custom-woodwork/untitled-20260909-1280-thumb.jpg",
       "w": 1200,
@@ -302,7 +370,13 @@
     {
       "id": "car-ports/carport-2",
       "category": "car-ports",
+      "categories": [
+        "car-ports"
+      ],
       "categoryLabel": "Car Ports",
+      "categoryLabels": [
+        "Car Ports"
+      ],
       "web": "photos/car-ports/carport-2.jpg",
       "thumb": "photos/car-ports/carport-2-thumb.jpg",
       "w": 1600,
@@ -314,7 +388,13 @@
     {
       "id": "car-ports/carport",
       "category": "car-ports",
+      "categories": [
+        "car-ports"
+      ],
       "categoryLabel": "Car Ports",
+      "categoryLabels": [
+        "Car Ports"
+      ],
       "web": "photos/car-ports/carport.jpg",
       "thumb": "photos/car-ports/carport-thumb.jpg",
       "w": 1600,
@@ -326,7 +406,13 @@
     {
       "id": "car-ports/carport2-2",
       "category": "car-ports",
+      "categories": [
+        "car-ports"
+      ],
       "categoryLabel": "Car Ports",
+      "categoryLabels": [
+        "Car Ports"
+      ],
       "web": "photos/car-ports/carport2-2.jpg",
       "thumb": "photos/car-ports/carport2-2-thumb.jpg",
       "w": 1200,
@@ -338,7 +424,13 @@
     {
       "id": "car-ports/carport2-3",
       "category": "car-ports",
+      "categories": [
+        "car-ports"
+      ],
       "categoryLabel": "Car Ports",
+      "categoryLabels": [
+        "Car Ports"
+      ],
       "web": "photos/car-ports/carport2-3.jpg",
       "thumb": "photos/car-ports/carport2-3-thumb.jpg",
       "w": 1200,
@@ -350,7 +442,13 @@
     {
       "id": "car-ports/carport2-4",
       "category": "car-ports",
+      "categories": [
+        "car-ports"
+      ],
       "categoryLabel": "Car Ports",
+      "categoryLabels": [
+        "Car Ports"
+      ],
       "web": "photos/car-ports/carport2-4.jpg",
       "thumb": "photos/car-ports/carport2-4-thumb.jpg",
       "w": 1125,
@@ -362,7 +460,13 @@
     {
       "id": "car-ports/carport2-5",
       "category": "car-ports",
+      "categories": [
+        "car-ports"
+      ],
       "categoryLabel": "Car Ports",
+      "categoryLabels": [
+        "Car Ports"
+      ],
       "web": "photos/car-ports/carport2-5.jpg",
       "thumb": "photos/car-ports/carport2-5-thumb.jpg",
       "w": 1200,
@@ -374,7 +478,13 @@
     {
       "id": "car-ports/carport2-6",
       "category": "car-ports",
+      "categories": [
+        "car-ports"
+      ],
       "categoryLabel": "Car Ports",
+      "categoryLabels": [
+        "Car Ports"
+      ],
       "web": "photos/car-ports/carport2-6.jpg",
       "thumb": "photos/car-ports/carport2-6-thumb.jpg",
       "w": 1200,
@@ -386,7 +496,13 @@
     {
       "id": "car-ports/carport2",
       "category": "car-ports",
+      "categories": [
+        "car-ports"
+      ],
       "categoryLabel": "Car Ports",
+      "categoryLabels": [
+        "Car Ports"
+      ],
       "web": "photos/car-ports/carport2.jpg",
       "thumb": "photos/car-ports/carport2-thumb.jpg",
       "w": 1600,
@@ -396,11 +512,17 @@
       "caption": "Carport2"
     },
     {
-      "id": "complete-remodel/complete-exterior-painting-2-after",
+      "id": "complete-remodel/complete-exterior-painting-after",
       "category": "complete-remodel",
+      "categories": [
+        "complete-remodel"
+      ],
       "categoryLabel": "Complete Remodel",
-      "web": "photos/complete-remodel/complete-exterior-painting-2-after.jpg",
-      "thumb": "photos/complete-remodel/complete-exterior-painting-2-after-thumb.jpg",
+      "categoryLabels": [
+        "Complete Remodel"
+      ],
+      "web": "photos/complete-remodel/complete-exterior-painting-after.jpg",
+      "thumb": "photos/complete-remodel/complete-exterior-painting-after-thumb.jpg",
       "w": 1600,
       "h": 1200,
       "tw": 800,
@@ -411,7 +533,13 @@
     {
       "id": "complete-remodel/complete-exterior-painting-before",
       "category": "complete-remodel",
+      "categories": [
+        "complete-remodel"
+      ],
       "categoryLabel": "Complete Remodel",
+      "categoryLabels": [
+        "Complete Remodel"
+      ],
       "web": "photos/complete-remodel/complete-exterior-painting-before.jpg",
       "thumb": "photos/complete-remodel/complete-exterior-painting-before-thumb.jpg",
       "w": 1600,
@@ -424,7 +552,13 @@
     {
       "id": "complete-remodel/complete-remodel-10",
       "category": "complete-remodel",
+      "categories": [
+        "complete-remodel"
+      ],
       "categoryLabel": "Complete Remodel",
+      "categoryLabels": [
+        "Complete Remodel"
+      ],
       "web": "photos/complete-remodel/complete-remodel-10.jpg",
       "thumb": "photos/complete-remodel/complete-remodel-10-thumb.jpg",
       "w": 1600,
@@ -436,7 +570,13 @@
     {
       "id": "complete-remodel/complete-remodel-2-2-2",
       "category": "complete-remodel",
+      "categories": [
+        "complete-remodel"
+      ],
       "categoryLabel": "Complete Remodel",
+      "categoryLabels": [
+        "Complete Remodel"
+      ],
       "web": "photos/complete-remodel/complete-remodel-2-2-2.jpg",
       "thumb": "photos/complete-remodel/complete-remodel-2-2-2-thumb.jpg",
       "w": 1600,
@@ -446,21 +586,15 @@
       "caption": "Complete Remodel 2 2"
     },
     {
-      "id": "complete-remodel/complete-remodel-2-2",
-      "category": "complete-remodel",
-      "categoryLabel": "Complete Remodel",
-      "web": "photos/complete-remodel/complete-remodel-2-2.jpg",
-      "thumb": "photos/complete-remodel/complete-remodel-2-2-thumb.jpg",
-      "w": 1600,
-      "h": 747,
-      "tw": 800,
-      "th": 374,
-      "caption": "Complete Remodel 2"
-    },
-    {
       "id": "complete-remodel/complete-remodel-2-3",
       "category": "complete-remodel",
+      "categories": [
+        "complete-remodel"
+      ],
       "categoryLabel": "Complete Remodel",
+      "categoryLabels": [
+        "Complete Remodel"
+      ],
       "web": "photos/complete-remodel/complete-remodel-2-3.jpg",
       "thumb": "photos/complete-remodel/complete-remodel-2-3-thumb.jpg",
       "w": 1600,
@@ -472,7 +606,13 @@
     {
       "id": "complete-remodel/complete-remodel-2-4",
       "category": "complete-remodel",
+      "categories": [
+        "complete-remodel"
+      ],
       "categoryLabel": "Complete Remodel",
+      "categoryLabels": [
+        "Complete Remodel"
+      ],
       "web": "photos/complete-remodel/complete-remodel-2-4.jpg",
       "thumb": "photos/complete-remodel/complete-remodel-2-4-thumb.jpg",
       "w": 1600,
@@ -484,7 +624,13 @@
     {
       "id": "complete-remodel/complete-remodel-2-5",
       "category": "complete-remodel",
+      "categories": [
+        "complete-remodel"
+      ],
       "categoryLabel": "Complete Remodel",
+      "categoryLabels": [
+        "Complete Remodel"
+      ],
       "web": "photos/complete-remodel/complete-remodel-2-5.jpg",
       "thumb": "photos/complete-remodel/complete-remodel-2-5-thumb.jpg",
       "w": 1600,
@@ -496,7 +642,13 @@
     {
       "id": "complete-remodel/complete-remodel-2-6",
       "category": "complete-remodel",
+      "categories": [
+        "complete-remodel"
+      ],
       "categoryLabel": "Complete Remodel",
+      "categoryLabels": [
+        "Complete Remodel"
+      ],
       "web": "photos/complete-remodel/complete-remodel-2-6.jpg",
       "thumb": "photos/complete-remodel/complete-remodel-2-6-thumb.jpg",
       "w": 1600,
@@ -508,7 +660,13 @@
     {
       "id": "complete-remodel/complete-remodel-2",
       "category": "complete-remodel",
+      "categories": [
+        "complete-remodel"
+      ],
       "categoryLabel": "Complete Remodel",
+      "categoryLabels": [
+        "Complete Remodel"
+      ],
       "web": "photos/complete-remodel/complete-remodel-2.jpg",
       "thumb": "photos/complete-remodel/complete-remodel-2-thumb.jpg",
       "w": 1600,
@@ -520,7 +678,13 @@
     {
       "id": "complete-remodel/complete-remodel-3",
       "category": "complete-remodel",
+      "categories": [
+        "complete-remodel"
+      ],
       "categoryLabel": "Complete Remodel",
+      "categoryLabels": [
+        "Complete Remodel"
+      ],
       "web": "photos/complete-remodel/complete-remodel-3.jpg",
       "thumb": "photos/complete-remodel/complete-remodel-3-thumb.jpg",
       "w": 1600,
@@ -532,7 +696,13 @@
     {
       "id": "complete-remodel/complete-remodel-4",
       "category": "complete-remodel",
+      "categories": [
+        "complete-remodel"
+      ],
       "categoryLabel": "Complete Remodel",
+      "categoryLabels": [
+        "Complete Remodel"
+      ],
       "web": "photos/complete-remodel/complete-remodel-4.jpg",
       "thumb": "photos/complete-remodel/complete-remodel-4-thumb.jpg",
       "w": 747,
@@ -544,7 +714,13 @@
     {
       "id": "complete-remodel/complete-remodel-5",
       "category": "complete-remodel",
+      "categories": [
+        "complete-remodel"
+      ],
       "categoryLabel": "Complete Remodel",
+      "categoryLabels": [
+        "Complete Remodel"
+      ],
       "web": "photos/complete-remodel/complete-remodel-5.jpg",
       "thumb": "photos/complete-remodel/complete-remodel-5-thumb.jpg",
       "w": 1600,
@@ -556,7 +732,13 @@
     {
       "id": "complete-remodel/complete-remodel-6",
       "category": "complete-remodel",
+      "categories": [
+        "complete-remodel"
+      ],
       "categoryLabel": "Complete Remodel",
+      "categoryLabels": [
+        "Complete Remodel"
+      ],
       "web": "photos/complete-remodel/complete-remodel-6.jpg",
       "thumb": "photos/complete-remodel/complete-remodel-6-thumb.jpg",
       "w": 1600,
@@ -568,7 +750,13 @@
     {
       "id": "complete-remodel/complete-remodel-7",
       "category": "complete-remodel",
+      "categories": [
+        "complete-remodel"
+      ],
       "categoryLabel": "Complete Remodel",
+      "categoryLabels": [
+        "Complete Remodel"
+      ],
       "web": "photos/complete-remodel/complete-remodel-7.jpg",
       "thumb": "photos/complete-remodel/complete-remodel-7-thumb.jpg",
       "w": 747,
@@ -580,7 +768,13 @@
     {
       "id": "complete-remodel/complete-remodel-8",
       "category": "complete-remodel",
+      "categories": [
+        "complete-remodel"
+      ],
       "categoryLabel": "Complete Remodel",
+      "categoryLabels": [
+        "Complete Remodel"
+      ],
       "web": "photos/complete-remodel/complete-remodel-8.jpg",
       "thumb": "photos/complete-remodel/complete-remodel-8-thumb.jpg",
       "w": 747,
@@ -592,7 +786,13 @@
     {
       "id": "complete-remodel/complete-remodel-9",
       "category": "complete-remodel",
+      "categories": [
+        "complete-remodel"
+      ],
       "categoryLabel": "Complete Remodel",
+      "categoryLabels": [
+        "Complete Remodel"
+      ],
       "web": "photos/complete-remodel/complete-remodel-9.jpg",
       "thumb": "photos/complete-remodel/complete-remodel-9-thumb.jpg",
       "w": 1600,
@@ -604,7 +804,13 @@
     {
       "id": "complete-remodel/complete-remodel",
       "category": "complete-remodel",
+      "categories": [
+        "complete-remodel"
+      ],
       "categoryLabel": "Complete Remodel",
+      "categoryLabels": [
+        "Complete Remodel"
+      ],
       "web": "photos/complete-remodel/complete-remodel.jpg",
       "thumb": "photos/complete-remodel/complete-remodel-thumb.jpg",
       "w": 1600,
@@ -616,33 +822,92 @@
   ],
   "pairs": [
     {
-      "id": "deck-repair/deck",
-      "label": "Deck",
-      "category": "deck-repair",
+      "id": "complete-remodel/complete-exterior-painting",
+      "label": "Complete Exterior Painting",
+      "category": "complete-remodel",
       "before": {
-        "id": "deck-repair/deck-before",
-        "category": "deck-repair",
-        "categoryLabel": "Deck Repair",
-        "web": "photos/deck-repair/deck-before.jpg",
-        "thumb": "photos/deck-repair/deck-before-thumb.jpg",
-        "w": 960,
-        "h": 1280,
-        "tw": 600,
-        "th": 800,
-        "caption": "Deck",
-        "badge": "Before"
-      },
-      "after": {
-        "id": "deck-repair/deck-after",
-        "category": "deck-repair",
-        "categoryLabel": "Deck Repair",
-        "web": "photos/deck-repair/deck-after.jpg",
-        "thumb": "photos/deck-repair/deck-after-thumb.jpg",
+        "id": "complete-remodel/complete-exterior-painting-before",
+        "category": "complete-remodel",
+        "categories": [
+          "complete-remodel"
+        ],
+        "categoryLabel": "Complete Remodel",
+        "categoryLabels": [
+          "Complete Remodel"
+        ],
+        "web": "photos/complete-remodel/complete-exterior-painting-before.jpg",
+        "thumb": "photos/complete-remodel/complete-exterior-painting-before-thumb.jpg",
         "w": 1600,
         "h": 1200,
         "tw": 800,
         "th": 600,
-        "caption": "Deck",
+        "caption": "Complete Exterior Painting",
+        "badge": "Before"
+      },
+      "after": {
+        "id": "complete-remodel/complete-exterior-painting-after",
+        "category": "complete-remodel",
+        "categories": [
+          "complete-remodel"
+        ],
+        "categoryLabel": "Complete Remodel",
+        "categoryLabels": [
+          "Complete Remodel"
+        ],
+        "web": "photos/complete-remodel/complete-exterior-painting-after.jpg",
+        "thumb": "photos/complete-remodel/complete-exterior-painting-after-thumb.jpg",
+        "w": 1600,
+        "h": 1200,
+        "tw": 800,
+        "th": 600,
+        "caption": "Complete Exterior Painting",
+        "badge": "After"
+      }
+    },
+    {
+      "id": "pergolas/deck-rebuild-with-pergola",
+      "label": "Deck Rebuild with Pergola",
+      "category": "pergolas",
+      "before": {
+        "id": "pergolas/deck-rebuild-with-pergola-before",
+        "category": "pergolas",
+        "categories": [
+          "pergolas",
+          "decks"
+        ],
+        "categoryLabel": "Pergolas & Covered Structures",
+        "categoryLabels": [
+          "Pergolas & Covered Structures",
+          "Decks"
+        ],
+        "web": "photos/pergolas/deck-rebuild-with-pergola-before.jpg",
+        "thumb": "photos/pergolas/deck-rebuild-with-pergola-before-thumb.jpg",
+        "w": 960,
+        "h": 1280,
+        "tw": 600,
+        "th": 800,
+        "caption": "Deck Rebuild with Pergola",
+        "badge": "Before"
+      },
+      "after": {
+        "id": "pergolas/deck-rebuild-with-pergola-after",
+        "category": "pergolas",
+        "categories": [
+          "pergolas",
+          "decks"
+        ],
+        "categoryLabel": "Pergolas & Covered Structures",
+        "categoryLabels": [
+          "Pergolas & Covered Structures",
+          "Decks"
+        ],
+        "web": "photos/pergolas/deck-rebuild-with-pergola-after.jpg",
+        "thumb": "photos/pergolas/deck-rebuild-with-pergola-after-thumb.jpg",
+        "w": 1600,
+        "h": 1200,
+        "tw": 800,
+        "th": 600,
+        "caption": "Deck Rebuild with Pergola",
         "badge": "After"
       }
     }
