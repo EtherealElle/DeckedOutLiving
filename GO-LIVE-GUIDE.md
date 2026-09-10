@@ -195,6 +195,17 @@ publish-website.cmd
 There may be several A records for `@`. Remove all of them. **Leave everything
 else alone**, even if you do not recognise it.
 
+You will almost certainly see this one, and it is fine:
+
+| Type | Host | Value |
+|---|---|---|
+| CNAME | `_domainconnect` | `_domainconnect.domains.squarespace.com` |
+
+That is Domain Connect - a machine-only record that lets services set up DNS
+automatically instead of you typing it. It plays no part in serving the website,
+and it cannot clash with the records above because it is a different hostname.
+Leave it. (Deleting it is harmless too, it just turns off that convenience.)
+
 **Add** these five:
 
 | Type | Host | Value |

@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-10T16:31:06Z",
+  "generated": "2026-09-10T17:28:48Z",
   "categories": [
     {
       "id": "decks",
@@ -58,12 +58,14 @@
       "category": "pergolas",
       "categories": [
         "pergolas",
-        "decks"
+        "decks",
+        "hero"
       ],
       "categoryLabel": "Pergolas & Covered Structures",
       "categoryLabels": [
         "Pergolas & Covered Structures",
-        "Decks"
+        "Decks",
+        "hero"
       ],
       "web": "photos/pergolas/deck-rebuild-with-pergola-3.jpg",
       "thumb": "photos/pergolas/deck-rebuild-with-pergola-3-thumb.jpg",

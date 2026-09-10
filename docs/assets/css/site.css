@@ -699,3 +699,25 @@ a.card:hover .card-photo img{transform:scale(1.04)}
   }
 }
 .card-more{white-space:nowrap}
+
+/* ---------- hero photo ----------
+   Replaces the placeholder drawing once there is real work to show. The
+   drawing stays in the markup as the fallback for a site with no photos. */
+.hero-shot{margin:0;position:relative}
+.hero-shot .hero-shot-fallback{display:block}
+.hero-shot.has-photo .hero-shot-fallback{display:none}
+.hero-shot img{
+  width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;
+  border-radius:var(--r-m);box-shadow:var(--shadow-l);
+  background:var(--ink-mid);
+}
+.hero-shot-cap{
+  position:absolute;left:12px;bottom:12px;
+  background:rgba(35,35,35,.82);color:#fff;
+  font-size:.74rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  padding:6px 12px;border-radius:999px;
+}
+@media (max-width:860px){
+  .hero-shot img{aspect-ratio:16/11}
+  .hero-shot-cap{font-size:.68rem;left:10px;bottom:10px}
+}

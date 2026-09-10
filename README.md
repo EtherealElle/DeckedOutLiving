@@ -165,6 +165,27 @@ tag that is not a real category is reported rather than silently ignored.
 The `+` is safe as a separator because it can never appear in a job name: the
 slug rules strip it.
 
+### Choosing the photo on the front page
+
+The big photo at the top of the home page fills itself in from the gallery. By
+default it picks the first finished shot it can find, decks first.
+
+To choose it yourself, add `+hero` to that photo's filename:
+
+```
+deck-rebuild-with-pergola-3+decks+hero.jpg
+```
+
+`hero` is a marker rather than a category, so it gets no filter button on the
+gallery and does not change any counts. Only one photo needs it - if several
+have it, the first wins.
+
+Pick a finished, sunny, uncluttered shot. It is the first thing anyone sees, and
+before-shots are skipped automatically for that reason.
+
+If there are no photos at all, the front page falls back to the line drawing it
+shipped with, so it never looks broken.
+
 ### Before/after pairs
 
 End two files with `-before` and `-after`:

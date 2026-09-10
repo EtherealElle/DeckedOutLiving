@@ -242,6 +242,66 @@
     });
   }
 
+  /* ============================================================
+     HERO PHOTO
+     The hero shipped with a line drawing so the page looked finished
+     before any photos existed. Once there is real work to show, the
+     drawing is replaced by it. To choose the shot yourself, add +hero
+     to a photo's filename; otherwise the best available is picked by
+     category, finished decks first.
+     ============================================================ */
+  var HERO_ORDER = ['decks', 'pergolas', 'screened-porches',
+                    'complete-remodel', 'custom-woodwork', 'car-ports'];
+
+  function pickHero(photos) {
+    var i, p, cats;
+    // 1. anything the owner explicitly tagged
+    for (i = 0; i < photos.length; i++) {
+      cats = photos[i].categories || [photos[i].category];
+      if (cats.indexOf('hero') !== -1) return photos[i];
+    }
+    // 2. otherwise the first photo in the best category available,
+    //    skipping before-shots - a hero should be the finished thing
+    for (var c = 0; c < HERO_ORDER.length; c++) {
+      for (i = 0; i < photos.length; i++) {
+        p = photos[i];
+        cats = p.categories || [p.category];
+        if (cats.indexOf(HERO_ORDER[c]) === -1) continue;
+        if (p.badge === 'Before') continue;
+        return p;
+      }
+    }
+    return photos[0] || null;
+  }
+
+  function fillHero(data) {
+    var slot = document.querySelector('[data-hero]');
+    if (!slot || !data || !data.photos || !data.photos.length) return;
+
+    var pick = pickHero(data.photos);
+    if (!pick) return;
+
+    var img = document.createElement('img');
+    img.src = BASE + (pick.thumb || pick.web);
+    if (pick.thumb && pick.web) {
+      // phone takes the ~87KB thumbnail, desktop the full-size one
+      img.srcset = BASE + pick.thumb + ' 800w, ' + BASE + pick.web + ' 1600w';
+      img.sizes = '(max-width: 860px) 100vw, 46vw';
+    }
+    img.alt = (pick.caption || 'Recent work') + ' by Decked Out Living in Griffin, GA';
+    // above the fold: load it eagerly and early, it is the largest paint
+    img.loading = 'eager';
+    img.decoding = 'async';
+    img.setAttribute('fetchpriority', 'high');
+    if (pick.w && pick.h) { img.width = pick.w; img.height = pick.h; }
+
+    slot.insertBefore(img, slot.firstChild);
+    slot.classList.add('has-photo');
+
+    var cap = slot.querySelector('.hero-shot-cap');
+    if (cap && pick.caption) { cap.textContent = pick.caption; cap.hidden = false; }
+  }
+
   /* A rail only needs a "swipe" hint when it actually overflows. */
   function railHints() {
     Array.prototype.forEach.call(document.querySelectorAll('.rail'), function (rail) {
@@ -264,10 +324,13 @@
     });
   }
 
-  if (document.querySelector('.ba[data-auto]') || document.querySelector('.card-photo[data-cat]')) {
+  if (document.querySelector('.ba[data-auto]') ||
+      document.querySelector('.card-photo[data-cat]') ||
+      document.querySelector('[data-hero]')) {
     loadJSON('photos/gallery.json', function (d) {
       hydrateSlider(d);
       fillServicePhotos(d);
+      fillHero(d);
     });
   }
 

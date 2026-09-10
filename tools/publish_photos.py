@@ -581,6 +581,10 @@ def build(force=False):
         for tag in tags:
             if tag == cat:
                 continue
+            if tag == "hero":
+                # not a category - it marks the photo the home page leads with
+                categories.append("hero")
+                continue
             if tag in CATEGORY_LABEL:
                 if tag not in categories:
                     categories.append(tag)
@@ -634,6 +638,8 @@ def build(force=False):
     counts = {}
     for p in photos:
         for c in p["categories"]:
+            if c == "hero":
+                continue   # a marker, not a category - no filter button for it
             counts[c] = counts.get(c, 0) + 1
 
     manifest = {
