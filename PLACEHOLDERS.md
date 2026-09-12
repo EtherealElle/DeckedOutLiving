@@ -165,8 +165,8 @@ Ordered by what actually blocks you.
 - [ ] **Send me your Georgia licence number** — see section 1. This is the only
       hard blocker, and it exists because the site now claims you are licensed
 - [ ] **Confirm the phone number** — it is on every page and in the sticky bar
-- [ ] **Connect Formspree** so the form emails you (GO-LIVE-GUIDE Step 6).
-      Until then the form says so honestly and offers call/text instead
+- [x] ~~Connect Formspree~~ — done 2026-09-12, form `xljeyenw`, emails
+      bilesenterprise@gmail.com
 - [ ] **Confirm the four reviews** are genuine, or delete them
 - [ ] **Confirm the opening days** (Mon–Fri assumed)
 - [x] ~~Add job photos~~ — 4 published, all in Deck Repair
