@@ -46,11 +46,19 @@ def current_domain():
     return m.group(1) if m else None
 
 
+def page_url(base, p):
+    """The address a page is known by. Must match its <link rel="canonical">,
+    so index.html files are listed as their folder: / and /services/."""
+    if p.endswith("index.html"):
+        p = p[:-len("index.html")]
+    return f"{base}/{p}"
+
+
 def write_sitemap(base):
     today = date.today().isoformat()
     rows = "\n".join(
         f"  <url>\n"
-        f"    <loc>{base}/{p}</loc>\n"
+        f"    <loc>{page_url(base, p)}</loc>\n"
         f"    <lastmod>{today}</lastmod>\n"
         f"    <changefreq>{freq}</changefreq>\n"
         f"    <priority>{pri}</priority>\n"
